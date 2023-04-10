@@ -63,4 +63,34 @@ public class Monster extends Character{
     public void setDodgeAbility(double dA){
         this.dodgeAbility = dA;
     }
+    
+    public boolean monsterValidMove(HeroGroup HeroGroup){
+        for(int i = 0 ; i < HeroGroup.getNumberOfHeros(); i++){
+            if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1))){
+                return false;
+            }else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)-1)){
+                return false;
+            }else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)+1)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Hero heroInRange(HeroGroup HeroGroup){
+        for(int i = 0 ; i < HeroGroup.getNumberOfHeros(); i++){
+            if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1))){
+                return HeroGroup.getPack().get(i);
+            }else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)-1)){
+                return HeroGroup.getPack().get(i);
+            }else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)+1)){
+                return HeroGroup.getPack().get(i);
+            }else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0) + 1) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)+1)){
+                return HeroGroup.getPack().get(i);
+            }else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0) + 1) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)-1)){
+                return HeroGroup.getPack().get(i);
+            }
+        }
+        return null;
+    }
 }

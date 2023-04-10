@@ -1,0 +1,93 @@
+import java.util.ArrayList;
+import java.util.List;
+
+//Can do the following:
+//create character with name, level and HP
+//update HP when character receives damage/takes a potion
+//increase character level
+//getters and setters to access/update attributes
+abstract class Character {
+    public String name;
+    public int level;
+    public double HP;
+    public String type;
+    public boolean isFainted = false;
+
+    public String lane;
+
+    public List<Integer> currPos = new ArrayList<>(2);
+    public List<Integer> nexusPos = new ArrayList<>(2);
+
+    public Character(){
+        name = "Null";
+        level = 1;
+        HP = 1000;
+        type = "Null";
+    }
+    public Character(String n, int l, double h, String t, String lane, List<Integer> begin){
+        this.name = n;
+        this.level = l;
+        this.HP = this.level*100;
+        this.type = t;
+        this.lane = lane;
+        for(int i = 0;i<currPos.size();i++){
+            this.currPos.add(begin.get(i));
+            this.nexusPos.add(begin.get(i));
+
+        }
+    }
+
+    public void checkHP(){
+        if(this.HP<=0){
+            this.isFainted = true;
+        }
+    }
+
+    //GETTERS AND SETTERS
+
+    public String getName(){
+        return this.name;
+    }
+    public int getLevel(){
+        return this.level;
+    }
+
+    public double getHP(){
+        return this.HP;
+    }
+    public boolean getIsFainted(){
+        return this.isFainted;
+    }
+    public String getType(){
+        return this.type;
+    }
+    public String getLane(){
+        return this.lane;
+    }
+
+    public List<Integer> getCurrPos(){
+        return this.currPos;
+    }
+    public List<Integer> getNexusPos(){
+        return this.nexusPos;
+    }
+
+    public void setLevel(int lev){
+        this.level = lev;
+    }
+    public void setHP(double hp){
+        this.HP = hp;
+    }
+    public void setIsFainted(boolean res){
+        this.isFainted = res;
+    }
+    public void setLane(String newLane){
+        this.lane = newLane;
+    }
+    public void setCurrPos(List<Integer> position){
+        for(int i =0;i<position.size();i++){
+            this.currPos.set(i,position.get(i));
+        }
+    }
+
+}

@@ -14,27 +14,63 @@ public class Control {
         System.out.println("q - quit game");
     }
 
-    public boolean inputControl(World world, Hero hero, String key){
+    public boolean inputControl(World world, Hero hero, MonsterPack monsterPack, String key){
         int currentX = hero.getCurrPos().get(0);
         int currentY = hero.getCurrPos().get(1);
         switch (key) {
             case "w":
-                currentX -= 1;
-                return world.traverseBoard(hero, currentX, currentY, key);
+                if(hero.heroValidMove(monsterPack)){
+                    currentX -= 1;
+//                    Monster monster = hero.monsterInRange(monsterPack);
+//                    if(monster != null){
+//                        // take user input and call hero.attack(monster)
+//                        // if hero is fainted revive and return true
+//                    }
+                    return world.traverseBoard(hero, currentX, currentY, key);
+                }else{
+                    return true;
+                }
             case "a":
-                currentY -= 1;
-                return world.traverseBoard(hero, currentX, currentY, key);
+                if(hero.heroValidMove(monsterPack)){
+                    currentY -= 1;
+                    //                    Monster monster = hero.monsterInRange(monsterPack);
+//                    if(monster != null){
+//                        // take user input and call hero.attack(monster)
+//                        // if hero is fainted revive and return true
+//                    }
+                    return world.traverseBoard(hero, currentX, currentY, key);
+                }else{
+                    return true;
+                }
             case "s":
-                currentX += 1;
-                return world.traverseBoard(hero, currentX, currentY, key);
+                if(hero.heroValidMove(monsterPack)){
+                    currentX += 1;
+                    //                    Monster monster = hero.monsterInRange(monsterPack);
+//                    if(monster != null){
+//                        // take user input and call hero.attack(monster)
+//                        // if hero is fainted revive and return true
+//                    }
+                    return world.traverseBoard(hero, currentX, currentY, key);
+                }else{
+                    return true;
+                }
             case "d":
-                currentY += 1;
-                return world.traverseBoard(hero, currentX, currentY, key);
+                if(hero.heroValidMove(monsterPack)){
+                    currentY += 1;
+                    //                    Monster monster = hero.monsterInRange(monsterPack);
+//                    if(monster != null){
+//                        // take user input and call hero.attack(monster)
+//                        // if hero is fainted revive and return true
+//                    }
+                    return world.traverseBoard(hero, currentX, currentY, key);
+                }else{
+                    return true;
+                }
             case "i":
                 hero.stats();
                 return true;
             case "m":
-                return world.traverseBoard(hero,currentX, currentY, key);
+                return world.traverseBoard(hero, currentX, currentY, key);
             case "e":
                 return hero.checkInventory();
             case "z":

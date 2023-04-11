@@ -40,6 +40,20 @@ public class Monster extends Character{
             System.out.println(this.getName() + " has attacked " + h.getName() + " for " + this.baseDamage + " damage!");
         }
     }
+    
+    public void takeAction(HeroGroup heroGroup){
+        int currentX = this.getCurrPos().get(0);
+        int currentY = this.getCurrPos().get(1);
+        if(this.monsterValidMove(heroGroup)){
+            currentX -= 1;
+            this.setCurrPos(Arrays.asList(currentX,currentY));
+        }else{
+            Hero hero = this.heroInRange(heroGroup);
+            if(hero != null){
+                this.attackHero(hero);
+            }
+        }
+    }
 
                                             //GETTERS AND SETTERS
     public double getBaseDamage(){

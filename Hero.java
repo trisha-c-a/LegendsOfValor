@@ -323,6 +323,14 @@ public class Hero extends Character{
                         + "       " + this.getExperiencePoints() + "       " + this.getLevel());
             }
     }
+    
+    public void attack(Monster monster) {
+        while (!this.getIsFainted() && !monster.getIsFainted()) {
+            this.stats();
+            Item tool = this.chooseItem();
+            this.useItem(tool,monster);
+        }
+    }
 
 
 

@@ -1,4 +1,4 @@
-public class Bush extends Cell{
+public class Bush extends Cell implements ModifyAttribute{
     public Bush(String name){
         super(name);
     }

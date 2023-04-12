@@ -2,7 +2,7 @@ import java.util.*;
 
 public class World {
     public Cell [][] board;
-    public int dimension;
+    public int dimension = 8;
     public HashMap<String, List<Character>> laneAndCharacters = new HashMap<>();
     //{laneName:[hero,monster]}
 
@@ -92,24 +92,40 @@ public class World {
     }
 
     public boolean traverseBoard(Hero hero, int currentX, int currentY, String token){
-        if(currentX < 0 || currentX >= this.dimension || currentY < 0 || currentY >= this.dimension){
+        if(currentX < 0 || currentX > this.dimension || currentY < 0 || currentY > this.dimension){
             System.out.println("You are trying to exit the world boundary!");
             return true;
         }
         else if(board[currentX][currentY].name == "X"){ System.out.println("Inaccessible zone encountered!"); return true;}
-        else if(board[currentX][currentY].name == "M"){
+        else if(board[currentX][currentY].name == "N"){
             hero.setCurrPos(Arrays.asList(currentX,currentY));
-            return ((Market)board[currentX][currentY]).entrance(hero);
+            return true;
         }
-        else if(board[currentX][currentY].name == "C") {
-            if (token.equals("m")) {System.out.println("You are not on a market cell!"); return true;}
-            else{
-                hero.setCurrPos(Arrays.asList(currentX,currentY));
-                return ((Common)board[currentX][currentY]).entrance(hero);
-            }
 
+        this.updateHeroAttributes(hero);
+        hero.setCurrPos(Arrays.asList(currentX,currentY));
+        if(board[currentX][currentY].name == "B"){
+            ((Bush) board[currentX][currentY]).entry(hero);
         }
-        return false;
+        else if(board[currentX][currentY].name == "C"){
+            ((Cave) board[currentX][currentY]).entry(hero);
+        }
+        else if(board[currentX][currentY].name == "K"){
+            ((Koulou) board[currentX][currentY]).entry(hero);
+        }
+        else if(board[currentX][currentY].name == "P") {
+        }
+        return true;
+    }
+
+    public void updateHeroAttributes(Hero h){
+        if(board[h.getCurrPos().get(0)][h.getCurrPos().get(1)] instanceof Bush){
+            ((Bush)board[h.getCurrPos().get(0)][h.getCurrPos().get(1)]).exit(h);
+        } else if (board[h.getCurrPos().get(0)][h.getCurrPos().get(1)] instanceof Cave){
+            ((Cave)board[h.getCurrPos().get(0)][h.getCurrPos().get(1)]).exit(h);
+        }else if (board[h.getCurrPos().get(0)][h.getCurrPos().get(1)] instanceof Koulou){
+            ((Koulou)board[h.getCurrPos().get(0)][h.getCurrPos().get(1)]).exit(h);
+        }
     }
 
     public void createLaneCharacters(HeroGroup group, MonsterPack pack){

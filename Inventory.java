@@ -14,9 +14,7 @@ public class Inventory{
     public HashMap<String, HashMap<Item,Integer>> inventory = new HashMap<>();
 
     public Inventory(){
-
     }
-
     public Inventory(String type){
         Reader reader = new Reader();
         List<List<List<String>>> marketOptions = reader.getMarketDetails();
@@ -51,7 +49,6 @@ public class Inventory{
         this.addItem("Weapon", new Weapon(weapon.get(randomNum).get(0), Double.parseDouble(weapon.get(randomNum).get(1)), Long.parseLong(weapon.get(randomNum).get(2)), Long.parseLong(weapon.get(randomNum).get(3)), Integer.parseInt(weapon.get(randomNum).get(4))));
 
     }
-
     public String[] doesExist(String itemType, String itemName) {
         String[] names = new String[2];
         //check if itemType exists
@@ -89,7 +86,6 @@ public class Inventory{
         }
 
     }
-
     public void addItem(String itemType,Item thing){
         boolean add = false;
 //        System.out.println(inventory.containsKey(itemType));
@@ -135,7 +131,6 @@ public class Inventory{
         }
 
     }
-
     public Item retrieveItem(String itemType, String itemName){
         String[] names = this.doesExist(itemType, itemName);
         itemType = names[0];
@@ -147,7 +142,18 @@ public class Inventory{
         }
         return null;
     }
-
+    public Boolean isEmpty(){
+        if(inventory.size()==0){
+            return true;
+        }
+        return false;
+    }
+    public Boolean isTypePresent(String itemType){
+        if(inventory.containsKey(itemType)){
+            return true;
+        }
+        return false;
+    }
     public void viewInventory(){
         if(inventory.size() == 0) System.out.println("Your inventory is empty!");
         else{

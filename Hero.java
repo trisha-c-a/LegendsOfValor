@@ -10,6 +10,7 @@ public class Hero extends Character{
     public double dexterityValue;
     public double agilityValue;
     public double goldAmount;
+    public Item equipment;
     public Inventory bag = new Inventory();
 
     //Constructor for a default hero
@@ -64,12 +65,13 @@ public class Hero extends Character{
     public void roundUpdate(int monsterLevel){
         super.setHP(super.getHP()*1.1);
         this.MP = this.MP*1.1;
-        if(super.getIsFainted()==false){
+        if(!super.getIsFainted()){
             this.setGoldAmount(this.getGoldAmount() + ((double)monsterLevel*100));
             this.setExperiencePoints(this.getExperiencePoints()+ (long)monsterLevel*2);
             this.checkExperience();
         }
         else{
+            super.setCurrPos(super.getNexusPos());
             super.setIsFainted(false);
         }
     }
@@ -99,53 +101,6 @@ public class Hero extends Character{
             }
         }
         return this.getBag().retrieveItem(itemType,itemName);
-    }
-
-    public void consumePotion(Item product){
-        boolean appliedAttribute = false;
-        while(!appliedAttribute){
-            System.out.println("Enter attribute that you would like to increase:");
-            System.out.println(((Potion)product).displayAttributeAffected());
-            Scanner type = new Scanner(System.in);
-            String p = type.nextLine();
-            switch (p) {
-                case "Health":
-                    this.setHP(this.getHP() + ((Potion) product).getAttributeIncrease());
-                    this.getBag().removeItem(product.getType(), product.getName());
-                    System.out.println(this.getName() + " has increased their HP with " + ((Potion) product).getName() + " potion! ");
-                    appliedAttribute = true;
-                    break;
-                case "Strength":
-                    this.setStrengthValue(this.getStrengthValue() + ((Potion) product).getAttributeIncrease());
-                    this.getBag().removeItem(product.getType(), product.getName());
-                    System.out.println(this.getName() + " has increased their strength with " + ((Potion) product).getName() + " potion! ");
-                    appliedAttribute = true;
-                    break;
-                case "Mana":
-                    this.setMP(this.getMP() + ((Potion) product).getAttributeIncrease());
-                    this.getBag().removeItem(product.getType(), product.getName());
-                    System.out.println(this.getName() + " has increased their MP with " + ((Potion) product).getName() + " potion! ");
-                    appliedAttribute = true;
-                    break;
-                case "Agility":
-                    this.setAgilityValue(this.getAgilityValue() + ((Potion) product).getAttributeIncrease());
-                    this.getBag().removeItem(product.getType(), product.getName());
-                    System.out.println(this.getName() + " has increased their agility with " + ((Potion) product).getName() + " potion! ");
-                    appliedAttribute = true;
-                    break;
-                case "Dexterity":
-                    this.setDexterityValue(this.getDexterityValue() + ((Potion) product).getAttributeIncrease());
-                    this.getBag().removeItem(product.getType(), product.getName());
-                    System.out.println(this.getName() + " has increased their dexterity with " + ((Potion) product).getName() + " potion! ");
-                    appliedAttribute = true;
-                    break;
-                default:
-                    System.out.println("This attribute does not exist. Please enter a different attribute");
-                    appliedAttribute = true;
-                    break;
-            }
-
-        }
     }
 
     public void useItem(Item product, Monster m) {
@@ -193,17 +148,139 @@ public class Hero extends Character{
         }
     }
 
-    public void castSpell(Monster m){
-        if(this.bag.getInventory().size()==0 || !this.bag.getInventory().containsKey("Fire Spell")
-        || !this.bag.getInventory().containsKey("Ice Spell") || !this.bag.getInventory().containsKey("Light Spell")){
-            System.out.println("You do not own any spells at this moment!");
+    public Boolean changeEquipment(){
+        if(this.bag.isEmpty()){
+            System.out.println("You have nothing to pick from your inventory!");
+            return true;
         }
-        else{
-            this.bag.viewInventory();
-            System.out.println("E");
+        if(!this.bag.isTypePresent("Weapon") || !this.bag.isTypePresent("Armor")){
+            System.out.println("You do not have a weapon or armor to pick!");
+            return true;
         }
+
+        Scanner type = new Scanner(System.in);
+        String itemType = "";
+        System.out.println("Please enter if you'd like to pick a Weapon or Armor: ");
+        while(true){
+            if(type.hasNextLine()){
+                itemType = type.nextLine();
+            }
+            if(!itemType.equals("Weapon") || !itemType.equals("Armor")){
+                System.out.println("Incorrect type! Please enter 'Weapon' or 'Armor':");
+            }
+            else{
+                break;
+            }
+        }
+
+        String itemName ="";
+        this.bag.viewInventory();
+        System.out.println("Please enter the name of the item: ");
+        this.equipment = this.bag.retrieveItem(itemType,itemName);
+
+        return true;
+
     };
-    public void changeEquipment(){};
+    public Boolean consumePotion(){
+        if(this.bag.isEmpty()){
+            System.out.println("You have nothing to pick from your inventory!");
+            return true;
+        }
+        if(!this.bag.isTypePresent("Potion")){
+            System.out.println("You do not have a potion to pick!");
+            return true;
+        }
+
+        Scanner type = new Scanner(System.in);
+
+        String itemName ="";
+        this.bag.viewInventory();
+        System.out.println("Please enter the name of the item: ");
+        Item product = this.bag.retrieveItem("Potion",itemName);
+
+        boolean appliedAttribute = false;
+        while(!appliedAttribute){
+            System.out.println("Enter attribute that you would like to increase:");
+            System.out.println(((Potion)product).displayAttributeAffected());
+            String p = type.nextLine();
+            switch (p) {
+                case "Health":
+                    this.setHP(this.getHP() + ((Potion) product).getAttributeIncrease());
+                    this.getBag().removeItem(product.getType(), product.getName());
+                    System.out.println(this.getName() + " has increased their HP with " + ((Potion) product).getName() + " potion! ");
+                    appliedAttribute = true;
+                    break;
+                case "Strength":
+                    this.setStrengthValue(this.getStrengthValue() + ((Potion) product).getAttributeIncrease());
+                    this.getBag().removeItem(product.getType(), product.getName());
+                    System.out.println(this.getName() + " has increased their strength with " + ((Potion) product).getName() + " potion! ");
+                    appliedAttribute = true;
+                    break;
+                case "Mana":
+                    this.setMP(this.getMP() + ((Potion) product).getAttributeIncrease());
+                    this.getBag().removeItem(product.getType(), product.getName());
+                    System.out.println(this.getName() + " has increased their MP with " + ((Potion) product).getName() + " potion! ");
+                    appliedAttribute = true;
+                    break;
+                case "Agility":
+                    this.setAgilityValue(this.getAgilityValue() + ((Potion) product).getAttributeIncrease());
+                    this.getBag().removeItem(product.getType(), product.getName());
+                    System.out.println(this.getName() + " has increased their agility with " + ((Potion) product).getName() + " potion! ");
+                    appliedAttribute = true;
+                    break;
+                case "Dexterity":
+                    this.setDexterityValue(this.getDexterityValue() + ((Potion) product).getAttributeIncrease());
+                    this.getBag().removeItem(product.getType(), product.getName());
+                    System.out.println(this.getName() + " has increased their dexterity with " + ((Potion) product).getName() + " potion! ");
+                    appliedAttribute = true;
+                    break;
+                default:
+                    System.out.println("This attribute does not exist. Please enter a different attribute");
+                    appliedAttribute = true;
+                    break;
+            }
+
+        }
+        return true;
+    }
+    public Boolean castSpell(MonsterPack pack){
+        if(this.bag.isEmpty()){
+            System.out.println("You have nothing to pick from your inventory!");
+            return true;
+        }
+        if(!this.bag.isTypePresent("Ice Spell") || !this.bag.isTypePresent("Fire Spell") || !this.bag.isTypePresent("Light Spell")){
+            System.out.println("You do not have spells to pick!");
+            return true;
+        }
+
+        Scanner type = new Scanner(System.in);
+        String itemType = "";
+        System.out.println("Please enter the type of spell you would like to pick (Ice Spell/ Fire Spell/ Light Spell): ");
+        while(true){
+            if(type.hasNextLine()){
+                itemType = type.nextLine();
+            }
+            if(!itemType.equals("Ice Spell") || !itemType.equals("Fire Spell")|| !itemType.equals("Light Spell")){
+                System.out.println("Incorrect type! Please enter 'Ice Spell', 'Fire Spell' or 'Light Spell':");
+            }
+            else{
+                break;
+            }
+        }
+
+        String itemName ="";
+        this.bag.viewInventory();
+        System.out.println("Please enter the name of the item: ");
+        Item magic = this.bag.retrieveItem(itemType,itemName);
+
+        Monster m = this.monsterInRange(pack);
+        if(m==null){
+            System.out.println("No monster in range to cast spell!");
+            return true;
+        }
+        attack(m,magic);
+        return true;
+    };
 
     public Monster chooseMonster(MonsterPack monsters) {
         monsters.stats();
@@ -304,8 +381,48 @@ public class Hero extends Character{
         return true;
     }
 
+    public void attack(Monster monster,Item tool) {
+        if(monster==null){
+            System.out.println("No monsters in range to attack!");
+        }
+        else{
+            this.useItem(tool,monster);
+        }
+    }
+
+    public Monster monsterInRange(MonsterPack monsterPack){
+        for(int i = 0 ; i < monsterPack.getNumOfMonster(); i++){
+            if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1))){
+                return monsterPack.getPack().get(i);
+            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1)){
+                return monsterPack.getPack().get(i);
+            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)+1)){
+                return monsterPack.getPack().get(i);
+            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0) + 1) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)+1)){
+                return monsterPack.getPack().get(i);
+            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0) + 1) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1)){
+                return monsterPack.getPack().get(i);
+            }
+        }
+        return null;
+    }
+
+    public boolean heroValidMove(MonsterPack monsterPack){
+        for(int i = 0 ; i < monsterPack.getNumOfMonster(); i++){
+            if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1))){
+                return false;
+            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1)){
+                return false;
+            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)+1)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
     public boolean checkInventory(){
-        Scanner scanner = new Scanner(System.in);
         this.getBag().viewInventory();
         return true;
     }
@@ -322,14 +439,6 @@ public class Hero extends Character{
                         + this.getDexterityValue() + "       " + this.getGoldAmount()
                         + "       " + this.getExperiencePoints() + "       " + this.getLevel());
             }
-    }
-    
-    public void attack(Monster monster) {
-        while (!this.getIsFainted() && !monster.getIsFainted()) {
-            this.stats();
-            Item tool = this.chooseItem();
-            this.useItem(tool,monster);
-        }
     }
 
 
@@ -362,6 +471,10 @@ public class Hero extends Character{
     public Inventory getBag(){
         return this.bag;
     }
+
+    public Item getEquipment(){
+        return this.equipment;
+    }
     public void setMP(double mp){
         this.MP = mp;
     }
@@ -385,34 +498,8 @@ public class Hero extends Character{
     public void setExperiencePoints(long ex){
         this.experiencePoints = ex;
     }
-    
-    public boolean heroValidMove(MonsterPack monsterPack){
-        for(int i = 0 ; i < monsterPack.getNumOfMonster(); i++){
-            if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1))){
-                return false;
-            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1)){
-                return false;
-            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)+1)){
-                return false;
-            }
-        }
-        return true;
-    }
 
-    public Monster monsterInRange(MonsterPack monsterPack){
-        for(int i = 0 ; i < monsterPack.getNumOfMonster(); i++){
-            if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1))){
-                return monsterPack.getPack().get(i);
-            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1)){
-                return monsterPack.getPack().get(i);
-            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)+1)){
-                return monsterPack.getPack().get(i);
-            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0) + 1) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)+1)){
-                return monsterPack.getPack().get(i);
-            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0) + 1) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1)){
-                return monsterPack.getPack().get(i);
-            }
-        }
-        return null;
+    public void setEquipment(Item piece){
+        this.equipment = piece;
     }
 }

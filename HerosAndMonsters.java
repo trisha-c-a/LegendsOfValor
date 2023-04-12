@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class HerosAndMonsters implements GameDetails{
@@ -6,7 +9,6 @@ public class HerosAndMonsters implements GameDetails{
         System.out.println("Welcome to Legends: Heroes and Monsters!");
         this.rules();
         this.playGame();
-
     }
     @Override
     public void rules() {
@@ -37,28 +39,66 @@ public class HerosAndMonsters implements GameDetails{
     public void playGame() {
         Scanner scanner = new Scanner(System.in);
         HeroGroup heroGroup = new HeroGroup(); //Creates group of 3 heroes
-        World world = new World(heroGroup);
+        World world = new World();
         Control control = new Control();
         int numRounds = 8;
-        while (true) {
+        Boolean continueGame = true;
+        Boolean continueRound = true;
+        while (continueGame) {
             MonsterPack monsterPack = new MonsterPack(heroGroup.getHighestLevel()); //Generate 3 monsters randomly
+            world.createLaneCharacters(heroGroup,monsterPack);
             for (int round = 0; round < numRounds; round++) { //Runs for 8 rounds before re-generating monsters
+                world.displayBoard();
                 for (int i = 0; i < heroGroup.getNumberOfHeros(); i++) { //Allows each hero to pick a task
-                    control.displayControls();
+                    control.DisplayControls();
                     System.out.println("Please enter a key");
                     String key = scanner.nextLine();
-                    Boolean res = control.inputControl(world, heroGroup.getPack().get(i), key);
+                    Boolean res = control.inputControl(world, heroGroup.getPack().get(i), monsterPack, key);
                     if (res) {
                     } else {
+                        continueRound = false;
+                        continueGame = false;
                         break;
                     }
-                    world.displayBoard();
                 }
 
-                for (int i = 0;i<monsterPack.getNumOfMonster();i++){
-                    //create controls for monsters
+                if(!continueRound){
+                    break;
+                }
+
+                for (int i = 0;i<monsterPack.getNumOfMonster();i++){            //Monster actions
+                    Hero h = monsterPack.getPack().get(i).heroInRange(heroGroup);
+                    if(h!=null){
+                        monsterPack.getPack().get(i).attackHero(h);
+                        heroGroup.removeCharacter();
+                    }
+                    else{
+                        monsterPack.getPack().get(i).setCurrPos(Arrays.asList(monsterPack.getPack().get(i).getCurrPos().get(0) +1,
+                                                                monsterPack.getPack().get(i).getCurrPos().get(1)));
+                    }
+                }
+
+                String check = this.checkWinner(world);
+                if(check.equals("h")){
+                    heroGroup.updateHerosPostBattle(monsterPack.getHighestLevel());
+                } else if (check.equals("m")) {
+                    continueGame = false;
+                    break;
                 }
             }
         }
+    }
+
+    @Override
+    public String checkWinner(World map) {
+        for (Map.Entry<String, List<Character>> e1 : map.getLaneAndCharacters().entrySet()){
+            //if any hero in a lane is in the same row as the monster nexus, a true is returned
+            if(e1.getValue().get(0).getCurrPos().get(0)==e1.getValue().get(1).getNexusPos().get(0)){
+                return "h";
+            } else if (e1.getValue().get(1).getCurrPos().get(0)==e1.getValue().get(0).getNexusPos().get(0)) {
+                return "m";
+            }
+        }
+        return "c";
     }
 }

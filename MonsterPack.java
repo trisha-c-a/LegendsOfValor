@@ -85,15 +85,17 @@ public class MonsterPack implements Group{
 
     }
 
-    @Override
-    public void removeCharacter() {
+    public Monster removeMonster() {
+        Monster m = null;
         for(int i=0; i<pack.size();i++){
             pack.get(i).checkHP();
             if (pack.get(i).getIsFainted()) {
                 System.out.println( pack.get(i).getName() + " has fainted!");
+                m = pack.get(i);
                 pack.remove(pack.get(i));
             }
         }
+        return m;
     }
 
     @Override

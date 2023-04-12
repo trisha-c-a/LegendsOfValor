@@ -176,7 +176,6 @@ public class HeroGroup implements Group{
             return null;
         }
 
-    @Override
     public void removeCharacter() {
         for (Hero hero : pack) {
             hero.checkHP();

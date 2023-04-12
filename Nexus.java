@@ -1,7 +1,18 @@
 public class Nexus extends Cell{
+    
+    private Market market;
 
-    public Nexus(String name){
+    public Nexus(String name, String characterName, Character c){
         super(name);
+        if(characterName.equals("h")){
+            if(c instanceof Hero){
+            market = new Market("M");
+            }
+            else{
+                System.out.println("
+            }
+            
+        }
     }
     
     public Inventory store = new Inventory("M");

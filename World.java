@@ -6,7 +6,7 @@ public class World {
     public HashMap<String, List<Character>> laneAndCharacters = new HashMap<>();
     //{laneName:[hero,monster]}
 
-    public World(HeroGroup group){
+    public World(){
 
         this.createWorld();
         this.displayBoard();
@@ -110,6 +110,33 @@ public class World {
 
         }
         return false;
+    }
+
+    public void createLaneCharacters(HeroGroup group, MonsterPack pack){
+        for(int i=0;i<group.getNumberOfHeros();i++){
+            this.addCharacter(group.getPack().get(i));
+        }
+
+        for(int j=0;j<pack.getNumOfMonster();j++){
+            this.addCharacter(group.getPack().get(j));
+        }
+    }
+
+    public void addCharacter(Character c){
+        if(!laneAndCharacters.containsKey(c.getLane())){
+            List<Character> temp = new ArrayList<>();
+            temp.add(c);
+            laneAndCharacters.put(c.getLane(),temp);
+        }
+        else{
+            laneAndCharacters.get(c.getLane()).add(c);
+        }
+    }
+
+    public void removeMonster(Character c){
+        if(c!=null) {
+            laneAndCharacters.get(c.getLane()).remove(c);
+        }
     }
 
     public int getDimension(){

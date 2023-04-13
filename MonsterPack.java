@@ -22,7 +22,7 @@ public class MonsterPack implements Group{
         List<String> lanes = Arrays.asList("Top", "Middle", "Bottom");
         List<List<Integer>> coords = Arrays.asList(Arrays.asList(0,1),Arrays.asList(0,4), Arrays.asList(0,7));
         int i = 0;
-        while(this.numOfMonster > 0){
+        for(int j = this.numOfMonster-1;j>0;j--){
             int randomNum = ThreadLocalRandom.current().nextInt(0, filteredMonsters.size());
             Monster monster = new Monster(filteredMonsters.get(randomNum).get(0),filteredMonsters.get(randomNum).get(5),
                     Integer.parseInt(filteredMonsters.get(randomNum).get(1)), lanes.get(i),

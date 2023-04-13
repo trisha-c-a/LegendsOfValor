@@ -21,7 +21,6 @@ public class Control {
     }
 
     public boolean inputControl(World world, Hero hero, MonsterPack monsterPack, String key){
-        DisplayControls();
         int currentX = hero.getCurrPos().get(0);
         int currentY = hero.getCurrPos().get(1);
         switch (key) {
@@ -58,9 +57,11 @@ public class Control {
             case "p":
                 return hero.consumePotion();
             case "x":
-                hero.attack(hero.monsterInRange(monsterPack),hero.getEquipment());
-                Monster m = monsterPack.removeMonster();
-                world.removeMonster(m);
+                if(hero.attack(hero.monsterInRange(monsterPack),hero.getEquipment())){
+                    Monster m = monsterPack.removeMonster();
+                    world.removeMonster(m);
+                }
+
                 return true;
             case "c":
                 return hero.castSpell(monsterPack);

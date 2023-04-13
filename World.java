@@ -7,10 +7,7 @@ public class World {
     //{laneName:[hero,monster]}
 
     public World(){
-
         this.createWorld();
-        this.displayBoard();
-
     }
 
     public int checkMapSize(String size){
@@ -29,34 +26,37 @@ public class World {
     }
 
     public void createWorld(){
-        board = new Cell[8][8];
+        board = new Cell[this.dimension][this.dimension];
 
         //Adding inaccessible cells
-        for(int i=0;i<8;i++){
+        for(int i=0;i<board.length;i++){
             int j =2;
-            while(j<7){
+            while(j<board.length-1){
                 board[i][j] = new Inaccessible("X");
                 j = j+3;
             }
         }
 
+        List<String> characterType = Arrays.asList("H","M");
         //Adding nexus cells
         int k = 0;
-        while(k<8){
-            for(int j=0;j<8;j++){
+        int cType = 1;
+        while(k<this.dimension){
+            for(int j=0;j<this.dimension;j++){
                 if(board[k][j] instanceof Inaccessible){
                     continue;
                 }
                 else{
-                    board[k][j] = new Nexus("N");
+                    board[k][j] = new Nexus("N",characterType.get(cType));
                 }
             }
             k = k+7;
+            cType-=1;
         }
 
         Random random = new Random();
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
+        for(int i = 0; i < this.dimension; i++){
+            for(int j = 0; j < this.dimension; j++){
                 if(board[i][j] instanceof Inaccessible || board[i][j] instanceof Nexus){
                     continue;
                 }
@@ -80,8 +80,8 @@ public class World {
     }
 
     public void displayBoard(){
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < this.dimension; i++) {
+            for (int j = 0; j < this.dimension; j++) {
                 if(board[i][j].getName().equals("N")) System.out.print("N");
                 else if(board[i][j].getName() == "X") System.out.print("X");
                 else System.out.print(" ");
@@ -92,13 +92,20 @@ public class World {
     }
 
     public boolean traverseBoard(Hero hero, int currentX, int currentY, String token){
-        if(currentX < 0 || currentX > this.dimension || currentY < 0 || currentY > this.dimension){
+        if(!(board[currentX][currentY] instanceof Nexus) && token.equals("m")){
+            System.out.println("You cannot buy items outside the nexus!");
+            return true;
+        }
+        else if(currentX < 0 || currentX > this.dimension || currentY < 0 || currentY > this.dimension){
             System.out.println("You are trying to exit the world boundary!");
             return true;
         }
         else if(board[currentX][currentY].name == "X"){ System.out.println("Inaccessible zone encountered!"); return true;}
         else if(board[currentX][currentY].name == "N"){
             hero.setCurrPos(Arrays.asList(currentX,currentY));
+            if(token.equals("m")){
+                ((Nexus)board[currentX][currentY]).getMarket().entrance(hero);
+            }
             return true;
         }
 

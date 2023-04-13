@@ -381,13 +381,13 @@ public class Hero extends Character{
         return true;
     }
 
-    public void attack(Monster monster,Item tool) {
+    public Boolean attack(Monster monster,Item tool) {
         if(monster==null){
             System.out.println("No monsters in range to attack!");
+            return false;
         }
-        else{
-            this.useItem(tool,monster);
-        }
+        this.useItem(tool,monster);
+        return true;
     }
 
     public Monster monsterInRange(MonsterPack monsterPack){

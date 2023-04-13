@@ -46,6 +46,8 @@ public class HeroGroup implements Group{
                      hero = null;
                      break;
                 }
+
+                System.out.println(hero.getCurrPos());
                 this.pack.add(hero);
             }
             else{
@@ -83,16 +85,15 @@ public class HeroGroup implements Group{
     }
 
     public List<Integer> spawnPosition(String lane){
-        List<Integer> temp;
+//        List<Integer> temp;
         if(lane.equals("Top")){
-            temp = Arrays.asList(7,0);
+            return Arrays.asList(7,0);
         } else if (lane.equals("Middle")) {
-            temp = Arrays.asList(7,3);
+            return Arrays.asList(7,3);
         }
         else{
-            temp = Arrays.asList(7,6);
+            return Arrays.asList(7,6);
         }
-        return temp;
     }
 
     public int checkNumHeroes(String num){

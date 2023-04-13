@@ -30,11 +30,8 @@ abstract class Character {
         this.HP = this.level*100;
         this.type = t;
         this.lane = lane;
-        for(int i = 0;i<currPos.size();i++){
-            this.currPos.add(begin.get(i));
-            this.nexusPos.add(begin.get(i));
-
-        }
+        this.currPos = begin;
+        this.nexusPos = begin;
     }
 
     public void checkHP(){

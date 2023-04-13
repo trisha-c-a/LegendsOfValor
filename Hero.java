@@ -396,7 +396,7 @@ public class Hero extends Character{
     }
 
     public Monster monsterInRange(MonsterPack monsterPack){
-        for(int i = 0 ; i < monsterPack.getNumOfMonster(); i++){
+        for(int i = 0 ; i < monsterPack.getNumOfMonster()-1; i++){
             if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1))){
                 return monsterPack.getPack().get(i);
             }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1)){
@@ -413,7 +413,7 @@ public class Hero extends Character{
     }
 
     public boolean heroValidMove(MonsterPack monsterPack){
-        for(int i = 0 ; i < monsterPack.getNumOfMonster(); i++){
+        for(int i = 0 ; i < monsterPack.getNumOfMonster()-1; i++){
             if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1))){
                 return false;
             }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1)){

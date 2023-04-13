@@ -41,17 +41,27 @@ public class HerosAndMonsters implements GameDetails{
         HeroGroup heroGroup = new HeroGroup(); //Creates group of 3 heroes
         World world = new World();
         Control control = new Control();
+        for(int i = 0; i < 3; i++){
+            int heroX = heroGroup.getPack().get(i).getCurrPos().get(0);
+            int heroY = heroGroup.getPack().get(i).getCurrPos().get(1);
+            ((Nexus)world.board[heroX][heroY]).entry(heroGroup.getPack().get(i));
+        }
         int numRounds = 8;
         Boolean continueGame = true;
         Boolean continueRound = true;
         while (continueGame) {
             MonsterPack monsterPack = new MonsterPack(heroGroup.getHighestLevel()); //Generate 3 monsters randomly
+            for(int i = 0; i < 3; i++){
+                int monsterX = monsterPack.getPack().get(i).getCurrPos().get(0);
+                int monsterY = monsterPack.getPack().get(i).getCurrPos().get(1);
+                ((Nexus)world.board[monsterX][monsterY]).addChar(monsterPack.getPack().get(i));
+            }
             world.createLaneCharacters(heroGroup,monsterPack);
             for (int round = 0; round < numRounds; round++) { //Runs for 8 rounds before re-generating monsters
                 world.displayBoard();
                 for (int i = 0; i < heroGroup.getNumberOfHeros(); i++) { //Allows each hero to pick a task
                     control.DisplayControls();
-                    System.out.println("Please enter a key");
+                    System.out.println("Please enter a key " + heroGroup.getPack().get(i).getName());
                     String key = scanner.nextLine();
                     Boolean res = control.inputControl(world, heroGroup.getPack().get(i), monsterPack, key);
                     if (res) {
@@ -73,8 +83,32 @@ public class HerosAndMonsters implements GameDetails{
                         heroGroup.removeCharacter();
                     }
                     else{
+                        if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("C")){
+                            ((Cave)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).removeChar(monsterPack.getPack().get(i));
+                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("K")){
+                            ((Koulou)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).removeChar(monsterPack.getPack().get(i));
+                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("B")){
+                            ((Bush)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).removeChar(monsterPack.getPack().get(i));
+                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("P")){
+                            ((Common)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).removeChar(monsterPack.getPack().get(i));
+                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("N")){
+                            ((Nexus)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).removeChar(monsterPack.getPack().get(i));
+                        }
+
+
                         monsterPack.getPack().get(i).setCurrPos(Arrays.asList(monsterPack.getPack().get(i).getCurrPos().get(0) +1,
                                                                 monsterPack.getPack().get(i).getCurrPos().get(1)));
+
+
+                        if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("C")){
+                            ((Cave)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).addChar(monsterPack.getPack().get(i));
+                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("K")){
+                            ((Koulou)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).addChar(monsterPack.getPack().get(i));
+                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("B")){
+                            ((Bush)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).addChar(monsterPack.getPack().get(i));
+                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("P")){
+                            ((Common)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).addChar(monsterPack.getPack().get(i));
+                        }
                     }
                 }
 

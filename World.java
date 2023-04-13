@@ -86,11 +86,33 @@ public class World {
 
     public void displayBoard(){
         for (int i = 0; i < this.dimension; i++) {
-            for (int j = 0; j < this.dimension; j++) {
-                if(board[i][j].getName().equals("N")) System.out.print(ANSI_Blue + "N" + ANSI_RESET);
-                else if(board[i][j].getName() == "X") System.out.print(ANSI_Red+ "X" +ANSI_RESET);
-                else System.out.print(" ");
-                System.out.print("  ");
+            for (int k = 0; k < 3; k++) {
+                for(int j = 0; j < this.dimension; j++){
+                    if(k==0){
+                        if(board[i][j].getName().equals("N")) ((Nexus)board[i][j]).printFirst();
+                        else if(board[i][j].getName() == "X") ((Inaccessible)board[i][j]).printFirst();
+                        else if(board[i][j].getName() == "K") ((Koulou)board[i][j]).printFirst();
+                        else if(board[i][j].getName() == "P") ((Common)board[i][j]).printFirst();
+                        else if(board[i][j].getName() == "B") ((Bush)board[i][j]).printFirst();
+                        else if(board[i][j].getName() == "C") ((Cave)board[i][j]).printFirst();
+                    }else if(k==1){
+                        if(board[i][j].getName().equals("N")) ((Nexus)board[i][j]).printSecond();
+                        else if(board[i][j].getName() == "X") ((Inaccessible)board[i][j]).printSecond();
+                        else if(board[i][j].getName() == "K") ((Koulou)board[i][j]).printSecond();
+                        else if(board[i][j].getName() == "P") ((Common)board[i][j]).printSecond();
+                        else if(board[i][j].getName() == "B") ((Bush)board[i][j]).printSecond();
+                        else if(board[i][j].getName() == "C") ((Cave)board[i][j]).printSecond();
+                    }else if(k==2){
+                        if(board[i][j].getName().equals("N")) ((Nexus)board[i][j]).printThird();
+                        else if(board[i][j].getName() == "X") ((Inaccessible)board[i][j]).printThird();
+                        else if(board[i][j].getName() == "K") ((Koulou)board[i][j]).printThird();
+                        else if(board[i][j].getName() == "P") ((Common)board[i][j]).printThird();
+                        else if(board[i][j].getName() == "B") ((Bush)board[i][j]).printThird();
+                        else if(board[i][j].getName() == "C") ((Cave)board[i][j]).printThird();
+                    }
+                    System.out.print("   ");
+                }
+                System.out.println();
             }
             System.out.println();
         }
@@ -101,13 +123,15 @@ public class World {
             System.out.println("You cannot buy items outside the nexus!");
             return true;
         }
-        else if(currentX < 0 || currentX > this.dimension || currentY < 0 || currentY > this.dimension){
+        else if(currentX < 0 || currentX >= this.dimension || currentY < 0 || currentY >= this.dimension){
             System.out.println("You are trying to exit the world boundary!");
             return true;
         }
-        else if(board[currentX][currentY].name == "X"){ System.out.println("Inaccessible zone encountered!"); return true;}
-        else if(board[currentX][currentY].name == "N"){
+        else if(board[currentX][currentY].name.equals("X")){ System.out.println("Inaccessible zone encountered!"); return true;}
+        else if(board[currentX][currentY].name.equals("N")){
+            this.updateHeroAttributes(hero);
             hero.setCurrPos(Arrays.asList(currentX,currentY));
+            ((Nexus)board[currentX][currentY]).entry(hero);
             if(token.equals("m")){
                 ((Nexus)board[currentX][currentY]).getMarket().entrance(hero);
             }
@@ -116,16 +140,17 @@ public class World {
 
         this.updateHeroAttributes(hero);
         hero.setCurrPos(Arrays.asList(currentX,currentY));
-        if(board[currentX][currentY].name == "B"){
+        if(board[currentX][currentY].name.equals("B")){
             ((Bush) board[currentX][currentY]).entry(hero);
         }
-        else if(board[currentX][currentY].name == "C"){
+        else if(board[currentX][currentY].name.equals("C")){
             ((Cave) board[currentX][currentY]).entry(hero);
         }
-        else if(board[currentX][currentY].name == "K"){
+        else if(board[currentX][currentY].name.equals("K")){
             ((Koulou) board[currentX][currentY]).entry(hero);
         }
-        else if(board[currentX][currentY].name == "P") {
+        else if(board[currentX][currentY].name.equals("P")) {
+            ((Common) board[currentX][currentY]).entry(hero);
         }
         return true;
     }
@@ -137,6 +162,10 @@ public class World {
             ((Cave)board[h.getCurrPos().get(0)][h.getCurrPos().get(1)]).exit(h);
         }else if (board[h.getCurrPos().get(0)][h.getCurrPos().get(1)] instanceof Koulou){
             ((Koulou)board[h.getCurrPos().get(0)][h.getCurrPos().get(1)]).exit(h);
+        }else if (board[h.getCurrPos().get(0)][h.getCurrPos().get(1)] instanceof Common){
+            ((Common)board[h.getCurrPos().get(0)][h.getCurrPos().get(1)]).exit(h);
+        }else if (board[h.getCurrPos().get(0)][h.getCurrPos().get(1)] instanceof Nexus){
+            ((Nexus)board[h.getCurrPos().get(0)][h.getCurrPos().get(1)]).exit(h);
         }
     }
 

@@ -4,6 +4,11 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Hero extends Character{
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_Blue = "\u001B[34m";
+    public static final String ANSI_Green = "\u001B[32m";
+    public static final String ANSI_Red = "\u001B[31m";
     public double MP;
     public long experiencePoints;
     public double strengthValue;
@@ -434,10 +439,10 @@ public class Hero extends Character{
                 + "Strength" + "       " + "Agility"+ "       " + "Dexterity"
                 + "       " + "Gold"+ "       " + "Experience" +  "       " + "Level");
             if (!this.getIsFainted()) {
-                System.out.println(this.getName() + "       " + this.getHP() + "       " + this.getMP() + "       "
+                System.out.println(this.getName() + "       " + ANSI_Red + this.getHP() + ANSI_RESET + "       " + ANSI_Blue + this.getMP() + ANSI_RESET + "       "
                         + this.getStrengthValue() + "       " + this.getAgilityValue() + "       "
-                        + this.getDexterityValue() + "       " + this.getGoldAmount()
-                        + "       " + this.getExperiencePoints() + "       " + this.getLevel());
+                        + this.getDexterityValue() + "       " + ANSI_YELLOW + this.getGoldAmount() + ANSI_RESET
+                        + "       " + ANSI_Green + this.getExperiencePoints() + ANSI_RESET + "       " + this.getLevel());
             }
     }
 

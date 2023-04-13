@@ -43,7 +43,8 @@ public class Reader {
         for (String key : final_heroes.keySet()) {
             System.out.println(key + "->");
             for (List<String> hero : final_heroes.get(key)) {
-                System.out.format("Name: %s, Mana: %s, Strength: %s, Agility: %s, Dexterity: %s, Starting_Money: %s, Starting_Experience: %s\n", hero.get(0), hero.get(1), hero.get(2), hero.get(3), hero.get(4), hero.get(5), hero.get(6));
+                System.out.println("Name: " + hero.get(0) + ANSI_Blue + " Mana: " + hero.get(1) + ANSI_RESET + ANSI_Red + " Strength: " + hero.get(2) + " Agility: " + hero.get(3) + " Dexterity: " + hero.get(4) + ANSI_RESET + ANSI_YELLOW + " Starting_Money: " + hero.get(5) + ANSI_RESET + ANSI_Green + " Starting_Experience: " + hero.get(6) + ANSI_RESET);
+//                 System.out.format("Name: %s, Mana: %s, Strength: %s, Agility: %s, Dexterity: %s, Starting_Money: %s, Starting_Experience: %s\n", hero.get(0), hero.get(1), hero.get(2), hero.get(3), hero.get(4), hero.get(5), hero.get(6));
             }
         }
 

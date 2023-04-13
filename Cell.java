@@ -10,4 +10,11 @@ public class Cell {
         return this.name;
     }
 
+    public void printCell(){
+        System.out.println("X X X");
+    }
+    public void printFirst(){}
+    public void printSecond(){}
+    public void printThird(){}
+
 }

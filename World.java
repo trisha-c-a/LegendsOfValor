@@ -1,6 +1,11 @@
 import java.util.*;
 
 public class World {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_Blue = "\u001B[34m";
+    public static final String ANSI_Green = "\u001B[32m";
+    public static final String ANSI_Red = "\u001B[31m";
     public Cell [][] board;
     public int dimension = 8;
     public HashMap<String, List<Character>> laneAndCharacters = new HashMap<>();
@@ -82,8 +87,8 @@ public class World {
     public void displayBoard(){
         for (int i = 0; i < this.dimension; i++) {
             for (int j = 0; j < this.dimension; j++) {
-                if(board[i][j].getName().equals("N")) System.out.print("N");
-                else if(board[i][j].getName() == "X") System.out.print("X");
+                if(board[i][j].getName().equals("N")) System.out.print(ANSI_Blue + "N" + ANSI_RESET);
+                else if(board[i][j].getName() == "X") System.out.print(ANSI_Red+ "X" +ANSI_RESET);
                 else System.out.print(" ");
                 System.out.print("  ");
             }

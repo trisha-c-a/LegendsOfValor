@@ -3,6 +3,9 @@ import java.util.*;
 import static java.lang.Math.max;
 
 public class HeroGroup implements Group{
+    //This class represents the group of heroes created by the heroes
+    //This class helps initiate hero instances by taking input from the users
+    //It also includes different methods to allow for actions on heroes and display hero statistics
     public int numberOfHeros;
     public List<Integer> boardPos = Arrays.asList(0,0);
 

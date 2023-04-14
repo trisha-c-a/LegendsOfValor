@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 
 public class Nexus extends Cell{
+    // heroPresent and monsterPresent shows the characters that are currently in the cell
+    // The three printing methods are used to display the cell on the map
+    // This class also contains method to ensure the hero will be able to access Market in their own nexus cell
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_Blue = "\u001B[34m";

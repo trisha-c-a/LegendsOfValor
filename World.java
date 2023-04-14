@@ -1,6 +1,8 @@
 import java.util.*;
 
 public class World {
+    //This class creates the map of world where the game takes place
+    //Contains method to display the map/board and also handles appropriate actions like attibute update when a move is taken
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_Blue = "\u001B[34m";

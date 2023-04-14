@@ -1,5 +1,9 @@
 import java.util.*;
 public class Bush extends Cell implements ModifyAttribute{
+    // heroPresent and monsterPresent shows the characters that are currently in the cell
+    // entry() method takes care of the ability increase when hero enters
+    // exit() method resets the ability of hero when it leaves
+    // The three printing methods are used to display the cell on the map
 
     private String heroPresent;
 

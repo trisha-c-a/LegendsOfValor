@@ -44,7 +44,13 @@ public class Koulou extends Cell implements ModifyAttribute{
         else{
             this.monsterPresent = m.displayName;
         }
-        System.out.print( "K  " + this.heroPresent + "  " + this.monsterPresent + "  K");
+        if(h!=null && m != null) {
+            System.out.print( "K  " + this.heroPresent + "" + this.monsterPresent + "  K");
+        }else if(h == null && m == null){
+            System.out.print( "K  " + this.heroPresent + "  " + this.monsterPresent + "  K");
+        }else{
+            System.out.print( "K  " + this.heroPresent + " " + this.monsterPresent + "  K");
+        }
     }
     public void printThird(){System.out.print("K  K  K  K");}
 }

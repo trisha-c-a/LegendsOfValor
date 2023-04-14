@@ -42,7 +42,13 @@ public class Cave extends Cell implements ModifyAttribute{
         else{
             this.monsterPresent = m.displayName;
         }
-        System.out.print( "C  " + this.heroPresent + "  " + this.monsterPresent + "  C");
+        if(h!=null && m != null) {
+            System.out.print( "C  " + this.heroPresent + "" + this.monsterPresent + "  C");
+        }else if(h == null && m == null){
+            System.out.print( "C  " + this.heroPresent + "  " + this.monsterPresent + "  C");
+        }else{
+            System.out.print( "C  " + this.heroPresent + " " + this.monsterPresent + "  C");
+        }
     }
     public void printThird(){System.out.print("C  C  C  C");}
 }

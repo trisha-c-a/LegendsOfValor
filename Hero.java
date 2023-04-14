@@ -4,6 +4,10 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Hero extends Character{
+    //This class contains constructor methods of the hero instance including all attributes related
+    //This class also provide getter and setter methods for all attributes
+    //Other methods makes sure the hero acts and update their attributes and stats properly during game
+    //This class also contains methods to allow the hero to use Inventory items like potions, armor, weapon, spells
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_Blue = "\u001B[34m";

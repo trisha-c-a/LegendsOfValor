@@ -1,6 +1,8 @@
 import java.util.Scanner;
 
 public class Game {
+    //This is the super class of all games
+    //It provides the user the ability to choose the game they want to play
 
     public Game(){
         System.out.println("Welcome to the game world!");

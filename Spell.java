@@ -1,4 +1,7 @@
 abstract class Spell extends Item{
+    //This is the parent class of all spell types
+    //This class contains the constructor to setup the basic attributes of cells like level, price, name, type etc.
+    //Also provides getter methods and action methods to allow hero to cast spell on monster
 
     public double damage;
     public double MP;

@@ -1,4 +1,6 @@
 public class Potion extends Item{
+    //This class creates the potion instance
+    //Methods included allows for calculation of the affected attribute of the potion and also getting information about the potion
     public int attributeIncrease;
     public String attributeAffected;
     public Potion(String n, double p, long l, int aI, String aA) {

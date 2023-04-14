@@ -4,6 +4,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import static java.lang.Math.max;
 
 public class MonsterPack implements Group{
+    //This class enables the initiation of 3 monster characters base on the chosen heroes from the users
+    //Contains multiple getter and setter methods and other actions that will be perform on the monsters
+    //Also contains stat display to be monitored by the user during game
 
     public int numOfMonster;
     public int highestLevel;

@@ -1,4 +1,6 @@
 public class Inaccessible extends Cell{
+    // Creates an instance of cell that is not accesible to all characters
+    // The three printing methods are used to display the cell on the map
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_Blue = "\u001B[34m";

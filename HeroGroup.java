@@ -34,20 +34,19 @@ public class HeroGroup implements Group{
                 Hero hero;
                 switch (details.get(7)){                    
                     case "Warriors":
-                     hero = new Warrior(details.get(0), details.get(7), heroLane, position, Double.parseDouble(details.get(1)), Long.parseLong(details.get(6)), Double.parseDouble(details.get(2)), Double.parseDouble(details.get(4)), Double.parseDouble(details.get(3)), Double.parseDouble(details.get(5)));
+                     hero = new Warrior("H" + String.valueOf(i), details.get(0), details.get(7), heroLane, position, Double.parseDouble(details.get(1)), Long.parseLong(details.get(6)), Double.parseDouble(details.get(2)), Double.parseDouble(details.get(4)), Double.parseDouble(details.get(3)), Double.parseDouble(details.get(5)));
                      break;
                     case "Paladins": 
-                    hero = new Paladin(details.get(0), details.get(7), heroLane, position, Double.parseDouble(details.get(1)), Long.parseLong(details.get(6)), Double.parseDouble(details.get(2)), Double.parseDouble(details.get(4)), Double.parseDouble(details.get(3)), Double.parseDouble(details.get(5)));
+                    hero = new Paladin("H" + String.valueOf(i), details.get(0), details.get(7), heroLane, position, Double.parseDouble(details.get(1)), Long.parseLong(details.get(6)), Double.parseDouble(details.get(2)), Double.parseDouble(details.get(4)), Double.parseDouble(details.get(3)), Double.parseDouble(details.get(5)));
                     break;
                     case "Sorcerers":
-                     hero = new Sorceror(details.get(0), details.get(7), heroLane, position, Double.parseDouble(details.get(1)), Long.parseLong(details.get(6)), Double.parseDouble(details.get(2)), Double.parseDouble(details.get(4)), Double.parseDouble(details.get(3)), Double.parseDouble(details.get(5)));
+                     hero = new Sorceror("H" + String.valueOf(i), details.get(0), details.get(7), heroLane, position, Double.parseDouble(details.get(1)), Long.parseLong(details.get(6)), Double.parseDouble(details.get(2)), Double.parseDouble(details.get(4)), Double.parseDouble(details.get(3)), Double.parseDouble(details.get(5)));
                      break;
                     default: 
                      hero = null;
                      break;
                 }
 
-                System.out.println(hero.getCurrPos());
                 this.pack.add(hero);
             }
             else{
@@ -144,12 +143,12 @@ public class HeroGroup implements Group{
     public void stats() {
         System.out.println("                            Hero Statistics");
         System.out.println();
-        System.out.println("Name" + "       " + "HP" + "       " + "MP" + "       "
+        System.out.println("Name" + "       " + "DisplayName" + "       " +  "HP" + "       " + "MP" + "       "
                 + "Strength" + "       " + "Agility"+ "       " + "Dexterity"
                 + "       " + "Gold"+ "       " + "Experience" +  "       " + "Level");
         for (Hero hero : pack) {
             if (!hero.getIsFainted()) {
-                System.out.println(hero.getName() + "       " + hero.getHP() + "       " + hero.getMP() + "       "
+                System.out.println(hero.getName() + "       " + hero.getDisplayName()+ "       " +hero.getHP() + "       " + hero.getMP() + "       "
                         + hero.getStrengthValue() + "       " + hero.getAgilityValue() + "       "
                         + hero.getDexterityValue() + "       " + hero.getGoldAmount()
                         + "       " + hero.getExperiencePoints() + "       " + hero.getLevel());
@@ -178,10 +177,17 @@ public class HeroGroup implements Group{
         }
 
     public void removeCharacter() {
-        for (Hero hero : pack) {
-            hero.checkHP();
-            if (hero.getIsFainted()) {
-                System.out.println(hero.getName() + " has fainted!");
+        for (int i=0;i<pack.size();i++) {
+            pack.get(i).checkHP();
+            if (pack.get(i).getIsFainted()) {
+                System.out.println(pack.get(i).getDisplayName() + " has fainted!");
+                System.out.println(pack.get(i).getDisplayName() + " has respawned at their nexus...");
+                pack.get(i).setCurrPos(pack.get(i).getNexusPos());
+                pack.get(i).setIsFainted(false);
+                pack.get(i).setHP(pack.get(i).getLevel() * 100);
+                pack.get(i).setMP(pack.get(i).getOgMP());
+                System.out.println(pack.get(i).getDisplayName() + " HP has been reset");
+                System.out.println(pack.get(i).getDisplayName() + " MP has been reset");
             }
         }
     }

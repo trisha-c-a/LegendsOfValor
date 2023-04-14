@@ -8,6 +8,9 @@ public class World {
     public static final String ANSI_Red = "\u001B[31m";
     public Cell [][] board;
     public int dimension = 8;
+    public int monsterNexus_x = 0;
+
+    public int heroNexus_x = 7;
     public HashMap<String, List<Character>> laneAndCharacters = new HashMap<>();
     //{laneName:[hero,monster]}
 
@@ -84,7 +87,7 @@ public class World {
         }
     }
 
-    public void displayBoard(){
+    public void displayBoard(HeroGroup heroGroup, MonsterPack monsterPack){
         for (int i = 0; i < this.dimension; i++) {
             for (int k = 0; k < 3; k++) {
                 for(int j = 0; j < this.dimension; j++){
@@ -96,12 +99,26 @@ public class World {
                         else if(board[i][j].getName() == "B") ((Bush)board[i][j]).printFirst();
                         else if(board[i][j].getName() == "C") ((Cave)board[i][j]).printFirst();
                     }else if(k==1){
-                        if(board[i][j].getName().equals("N")) ((Nexus)board[i][j]).printSecond();
+                        Hero hero = null;
+                        Monster monster = null;
+                        for(Hero h: heroGroup.getPack()){
+                            if(h.getCurrPos().get(0) == i && h.getCurrPos().get(1) == j ){
+                                hero = h;
+                                break;
+                            }
+                        }
+                        for(Monster m: monsterPack.getPack()){
+                            if(m.getCurrPos().get(0) == i && m.getCurrPos().get(1) == j ){
+                                monster = m;
+                                break;
+                            }
+                        }
+                        if(board[i][j].getName().equals("N")) ((Nexus)board[i][j]).printSecond(hero, monster);
                         else if(board[i][j].getName() == "X") ((Inaccessible)board[i][j]).printSecond();
-                        else if(board[i][j].getName() == "K") ((Koulou)board[i][j]).printSecond();
-                        else if(board[i][j].getName() == "P") ((Common)board[i][j]).printSecond();
-                        else if(board[i][j].getName() == "B") ((Bush)board[i][j]).printSecond();
-                        else if(board[i][j].getName() == "C") ((Cave)board[i][j]).printSecond();
+                        else if(board[i][j].getName() == "K") ((Koulou)board[i][j]).printSecond(hero, monster);
+                        else if(board[i][j].getName() == "P") ((Common)board[i][j]).printSecond(hero, monster);
+                        else if(board[i][j].getName() == "B") ((Bush)board[i][j]).printSecond(hero, monster);
+                        else if(board[i][j].getName() == "C") ((Cave)board[i][j]).printSecond(hero, monster);
                     }else if(k==2){
                         if(board[i][j].getName().equals("N")) ((Nexus)board[i][j]).printThird();
                         else if(board[i][j].getName() == "X") ((Inaccessible)board[i][j]).printThird();
@@ -131,7 +148,6 @@ public class World {
         else if(board[currentX][currentY].name.equals("N")){
             this.updateHeroAttributes(hero);
             hero.setCurrPos(Arrays.asList(currentX,currentY));
-            ((Nexus)board[currentX][currentY]).entry(hero);
             if(token.equals("m")){
                 ((Nexus)board[currentX][currentY]).getMarket().entrance(hero);
             }
@@ -149,9 +165,6 @@ public class World {
         else if(board[currentX][currentY].name.equals("K")){
             ((Koulou) board[currentX][currentY]).entry(hero);
         }
-        else if(board[currentX][currentY].name.equals("P")) {
-            ((Common) board[currentX][currentY]).entry(hero);
-        }
         return true;
     }
 
@@ -162,20 +175,18 @@ public class World {
             ((Cave)board[h.getCurrPos().get(0)][h.getCurrPos().get(1)]).exit(h);
         }else if (board[h.getCurrPos().get(0)][h.getCurrPos().get(1)] instanceof Koulou){
             ((Koulou)board[h.getCurrPos().get(0)][h.getCurrPos().get(1)]).exit(h);
-        }else if (board[h.getCurrPos().get(0)][h.getCurrPos().get(1)] instanceof Common){
-            ((Common)board[h.getCurrPos().get(0)][h.getCurrPos().get(1)]).exit(h);
-        }else if (board[h.getCurrPos().get(0)][h.getCurrPos().get(1)] instanceof Nexus){
-            ((Nexus)board[h.getCurrPos().get(0)][h.getCurrPos().get(1)]).exit(h);
         }
     }
 
     public void createLaneCharacters(HeroGroup group, MonsterPack pack){
-        for(int i=0;i<group.getNumberOfHeros();i++){
-            this.addCharacter(group.getPack().get(i));
+        if(!(group == null)){
+            for(int i=0;i<group.getNumberOfHeros();i++){
+                this.addCharacter(group.getPack().get(i));
+            }
         }
 
         for(int j=0;j<pack.getNumOfMonster();j++){
-            this.addCharacter(group.getPack().get(j));
+            this.addCharacter(pack.getPack().get(j));
         }
     }
 
@@ -206,5 +217,13 @@ public class World {
 
     public void setDimension(int dim){
         this.dimension = dim;
+    }
+
+    public int getMonsterNexus(){
+        return this.monsterNexus_x;
+    }
+
+    public int getHeroNexus(){
+        return this.heroNexus_x;
     }
 }

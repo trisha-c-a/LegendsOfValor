@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class HerosAndMonsters implements GameDetails{
 
     public HerosAndMonsters(){
-        System.out.println("Welcome to Legends: Heroes and Monsters!");
+        System.out.println("Welcome to Legends of Valor!");
         this.rules();
         this.playGame();
     }
@@ -39,100 +39,70 @@ public class HerosAndMonsters implements GameDetails{
     public void playGame() {
         Scanner scanner = new Scanner(System.in);
         HeroGroup heroGroup = new HeroGroup(); //Creates group of 3 heroes
+        MonsterPack monsterPack = new MonsterPack(heroGroup.getHighestLevel(), 1); //Generate 3 monsters randomly
         World world = new World();
+        world.createLaneCharacters(heroGroup,monsterPack);
         Control control = new Control();
-        for(int i = 0; i < 3; i++){
-            int heroX = heroGroup.getPack().get(i).getCurrPos().get(0);
-            int heroY = heroGroup.getPack().get(i).getCurrPos().get(1);
-            ((Nexus)world.board[heroX][heroY]).entry(heroGroup.getPack().get(i));
-        }
         int numRounds = 8;
-        Boolean continueGame = true;
-        Boolean continueRound = true;
-        while (continueGame) {
-            MonsterPack monsterPack = new MonsterPack(heroGroup.getHighestLevel()); //Generate 3 monsters randomly
-            for(int i = 0; i < 3; i++){
-                int monsterX = monsterPack.getPack().get(i).getCurrPos().get(0);
-                int monsterY = monsterPack.getPack().get(i).getCurrPos().get(1);
-                ((Nexus)world.board[monsterX][monsterY]).addChar(monsterPack.getPack().get(i));
-            }
-            world.createLaneCharacters(heroGroup,monsterPack);
+        Boolean res;
+        String key;
+        game:
+        while (true) {
             for (int round = 0; round < numRounds; round++) { //Runs for 8 rounds before re-generating monsters
-                world.displayBoard();
                 for (int i = 0; i < heroGroup.getNumberOfHeros(); i++) { //Allows each hero to pick a task
+                    world.displayBoard(heroGroup, monsterPack);
                     control.DisplayControls();
-                    System.out.println("Please enter a key " + heroGroup.getPack().get(i).getName());
-                    String key = scanner.nextLine();
-                    Boolean res = control.inputControl(world, heroGroup.getPack().get(i), monsterPack, key);
-                    if (res) {
-                    } else {
-                        continueRound = false;
-                        continueGame = false;
-                        break;
+                    System.out.println("Please enter a key " + heroGroup.getPack().get(i).getDisplayName());
+                    key = scanner.nextLine();
+                    res = control.inputControl(world, heroGroup.getPack().get(i), monsterPack, key, heroGroup);
+                    while(key.equals("m") || key.equals("e") || key.equals("i")){
+                        world.displayBoard(heroGroup, monsterPack);
+                        control.DisplayControls();
+                        System.out.println("Please enter a key " + heroGroup.getPack().get(i).getDisplayName());
+                        key = scanner.nextLine();
+                        res = control.inputControl(world, heroGroup.getPack().get(i), monsterPack, key, heroGroup);
                     }
+
+                    if (!res || checkWinner(heroGroup, monsterPack, world)) { break game;}
                 }
 
-                if(!continueRound){
-                    break;
-                }
 
                 for (int i = 0;i<monsterPack.getNumOfMonster();i++){            //Monster actions
-                    Hero h = monsterPack.getPack().get(i).heroInRange(heroGroup);
-                    if(h!=null){
-                        monsterPack.getPack().get(i).attackHero(h);
+                    if(monsterPack.getPack().get(i).heroInRange(heroGroup)!=null){
+                        monsterPack.getPack().get(i).attackHero(monsterPack.getPack().get(i).heroInRange(heroGroup));
                         heroGroup.removeCharacter();
                     }
                     else{
-                        if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("C")){
-                            ((Cave)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).removeChar(monsterPack.getPack().get(i));
-                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("K")){
-                            ((Koulou)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).removeChar(monsterPack.getPack().get(i));
-                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("B")){
-                            ((Bush)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).removeChar(monsterPack.getPack().get(i));
-                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("P")){
-                            ((Common)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).removeChar(monsterPack.getPack().get(i));
-                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("N")){
-                            ((Nexus)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).removeChar(monsterPack.getPack().get(i));
-                        }
-
-
                         monsterPack.getPack().get(i).setCurrPos(Arrays.asList(monsterPack.getPack().get(i).getCurrPos().get(0) +1,
                                                                 monsterPack.getPack().get(i).getCurrPos().get(1)));
-
-
-                        if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("C")){
-                            ((Cave)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).addChar(monsterPack.getPack().get(i));
-                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("K")){
-                            ((Koulou)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).addChar(monsterPack.getPack().get(i));
-                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("B")){
-                            ((Bush)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).addChar(monsterPack.getPack().get(i));
-                        }else if(world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)].getName().equals("P")){
-                            ((Common)world.board[monsterPack.getPack().get(i).getCurrPos().get(0)][monsterPack.getPack().get(i).getCurrPos().get(1)]).addChar(monsterPack.getPack().get(i));
-                        }
+                        if(checkWinner(heroGroup, monsterPack, world)) break game;
                     }
                 }
 
-                String check = this.checkWinner(world);
-                if(check.equals("h")){
-                    heroGroup.updateHerosPostBattle(monsterPack.getHighestLevel());
-                } else if (check.equals("m")) {
-                    continueGame = false;
-                    break;
-                }
+                heroGroup.updateHerosPostBattle(monsterPack.getHighestLevel());
+
             }
+            MonsterPack temp = new MonsterPack(heroGroup.getHighestLevel(), monsterPack.getMonsterDisplayNumber()); //Generate 3 more monsters randomly
+            world.createLaneCharacters(null, temp);
+            monsterPack.getPack().addAll(temp.getPack());
+            monsterPack.setHighestLevel(monsterPack.getHighestLevel());
         }
     }
 
     @Override
-    public String checkWinner(World map) {
-        for (Map.Entry<String, List<Character>> e1 : map.getLaneAndCharacters().entrySet()){
-            //if any hero in a lane is in the same row as the monster nexus, a true is returned
-            if(e1.getValue().get(0).getCurrPos().get(0)==e1.getValue().get(1).getNexusPos().get(0)){
-                return "h";
-            } else if (e1.getValue().get(1).getCurrPos().get(0)==e1.getValue().get(0).getNexusPos().get(0)) {
-                return "m";
+    public boolean checkWinner(HeroGroup heroGroup, MonsterPack monsterPack, World world) {
+        for(Hero h: heroGroup.getPack()){
+            if(h.getCurrPos().get(0) == world.getMonsterNexus()){
+                System.out.println("A hero has reached the monster nexus! You have won the game!");
+                return true;
             }
         }
-        return "c";
+        for(Monster m: monsterPack.getPack()){
+            if(m.getCurrPos().get(0) == world.getHeroNexus()){
+                System.out.println("The monsters have reached the nexus! You have lost the game....");
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 abstract class Character {
     public String name;
     public int level;
+    public String displayName;
     public double HP;
     public String type;
     public boolean isFainted = false;
@@ -24,7 +25,7 @@ abstract class Character {
         HP = 1000;
         type = "Null";
     }
-    public Character(String n, int l, double h, String t, String lane, List<Integer> begin){
+    public Character(String displayName, String n, int l, double h, String t, String lane, List<Integer> begin){
         this.name = n;
         this.level = l;
         this.HP = this.level*100;
@@ -32,6 +33,7 @@ abstract class Character {
         this.lane = lane;
         this.currPos = begin;
         this.nexusPos = begin;
+        this.displayName = displayName;
     }
 
     public void checkHP(){
@@ -49,6 +51,7 @@ abstract class Character {
         return this.level;
     }
 
+    public String getDisplayName(){return this.displayName;}
     public double getHP(){
         return this.HP;
     }
@@ -82,9 +85,7 @@ abstract class Character {
         this.lane = newLane;
     }
     public void setCurrPos(List<Integer> position){
-        for(int i =0;i<position.size();i++){
-            this.currPos.set(i,position.get(i));
-        }
+        this.currPos = position;
     }
 
 }

@@ -7,9 +7,11 @@ public class MonsterPack implements Group{
 
     public int numOfMonster;
     public int highestLevel;
+    public int monsterDisplayNumber = 1;
     public List<Monster> pack = new ArrayList<Monster>();
 
-    public MonsterPack(int level){
+    public MonsterPack(int level, int dispNum){
+        this.monsterDisplayNumber = dispNum;
         List<List<String>> filteredMonsters = new ArrayList<>();
         Reader reader = new Reader();
         this.numOfMonster = 3;
@@ -24,7 +26,7 @@ public class MonsterPack implements Group{
         int i = 0;
         for(int j = this.numOfMonster-1;j>=0;j--){
             int randomNum = ThreadLocalRandom.current().nextInt(0, filteredMonsters.size());
-            Monster monster = new Monster(filteredMonsters.get(randomNum).get(0),filteredMonsters.get(randomNum).get(5),
+            Monster monster = new Monster("M" + String.valueOf(this.monsterDisplayNumber), filteredMonsters.get(randomNum).get(0),filteredMonsters.get(randomNum).get(5),
                     Integer.parseInt(filteredMonsters.get(randomNum).get(1)), lanes.get(i),
                     coords.get(i), Double.parseDouble(filteredMonsters.get(randomNum).get(2)),
                     Double.parseDouble(filteredMonsters.get(randomNum).get(3)),
@@ -32,6 +34,7 @@ public class MonsterPack implements Group{
             this.pack.add(monster);
             filteredMonsters.remove(randomNum);
             i+=1;
+            this.monsterDisplayNumber+=1;
         }
 
     }
@@ -85,17 +88,27 @@ public class MonsterPack implements Group{
 
     }
 
-    public Monster removeMonster() {
+    public Monster removeMonster(HeroGroup group) {
         Monster m = null;
-        for(int i=0; i<pack.size();i++){
-            pack.get(i).checkHP();
-            if (pack.get(i).getIsFainted()) {
-                System.out.println( pack.get(i).getName() + " has fainted!");
-                m = pack.get(i);
-                pack.remove(pack.get(i));
+        for(int i=0; i<this.pack.size();i++){
+            this.pack.get(i).checkHP();
+            if (this.pack.get(i).getIsFainted()) {
+                System.out.println(this.pack.get(i).getDisplayName() + " has fainted!");
+                m = this.pack.get(i);
+                this.dropAttributes(group,m);
+                this.pack.remove(this.pack.get(i));
             }
         }
         return m;
+    }
+
+    public void dropAttributes(HeroGroup group, Monster m){
+        for(int i=0;i<group.getNumberOfHeros();i++){
+            group.getPack().get(i).setGoldAmount(500*m.getLevel());
+            group.getPack().get(i).setExperiencePoints(2*m.getLevel());
+        }
+        System.out.println("Heroes gold and experience levels have increased!");
+        group.stats();
     }
 
     @Override
@@ -114,8 +127,14 @@ public class MonsterPack implements Group{
     public int getHighestLevel(){
         return this.highestLevel;
     }
-    public int getNumOfMonster(){
-        return this.numOfMonster;
+
+    public void setHighestLevel(int level){
+        this.highestLevel = level;
     }
+    public int getNumOfMonster(){
+        return this.pack.size();
+    }
+
+    public int getMonsterDisplayNumber(){return this.monsterDisplayNumber;}
 
 }

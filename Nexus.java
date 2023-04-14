@@ -9,16 +9,16 @@ public class Nexus extends Cell{
 
     String hostCharacter;
     Market market;
-    private ArrayList<String> characters;
+
+    private String heroPresent;
+
+    private String monsterPresent;
     public Nexus(String name, String characterType){
         super(name);
         this.hostCharacter = characterType;
         if(this.hostCharacter.equals("H")){
             market = new Market("M");
         }
-        characters = new ArrayList<String>();
-        characters.add(" ");
-        characters.add(" ");
     }
 
     public Market getMarket(){
@@ -28,29 +28,23 @@ public class Nexus extends Cell{
         return this.hostCharacter;
     }
 
-    public void entry(Hero h) {
-        this.characters.set(0, String.valueOf(h.getName().charAt(0)));
-    }
 
-    public void exit(Hero h) {
-        this.characters.set(0, " ");
-    }
-
-    public void addChar(Monster m){
-        this.characters.set(1, String.valueOf(m.getName().charAt(0)));
-    }
-
-    public void removeChar(Monster m){
-        this.characters.set(1, " ");
-    }
-
-    public void printCell(){
-        System.out.println(ANSI_Blue + "N  N  N  N" + ANSI_RESET);
-        System.out.println(ANSI_Blue + "N  " +ANSI_RESET + this.characters.get(0) + "  " + this.characters.get(1) +ANSI_Blue+ "  N" + ANSI_RESET);
-        System.out.println(ANSI_Blue + "N  N  N  N" + ANSI_RESET);
-    }
 
     public void printFirst(){System.out.print(ANSI_Blue + "N  N  N  N" + ANSI_RESET);}
-    public void printSecond(){System.out.print(ANSI_Blue + "N  " +ANSI_RESET + this.characters.get(0) + "  " + this.characters.get(1) +ANSI_Blue+ "  N" + ANSI_RESET);}
+    public void printSecond(Hero h, Monster m){
+        if(h == null){
+            this.heroPresent = " ";
+        }
+        else{
+            this.heroPresent = h.displayName;
+        }
+        if(m == null){
+            this.monsterPresent = " ";
+        }
+        else{
+            this.monsterPresent = m.displayName;
+        }
+        System.out.print(ANSI_Blue + "N  " +ANSI_RESET + this.heroPresent + "  " + this.monsterPresent +ANSI_Blue+ "  N" + ANSI_RESET);
+    }
     public void printThird(){System.out.print(ANSI_Blue + "N  N  N  N" + ANSI_RESET);}
 }

@@ -3,5 +3,5 @@ public interface GameDetails {
     public void rules();
     public void playGame();
 
-    public String checkWinner(World map);
+    public boolean checkWinner(HeroGroup heroGroup, MonsterPack monsterPack, World map);
 }

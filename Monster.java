@@ -22,8 +22,8 @@ public class Monster extends Character{
     }
 
     //Constructor for user defined monster attributes
-    public Monster(String nme, String typ, int lvl, String lane, List<Integer> position, double bD, double dV, double dA){
-        super(nme,lvl,100,typ,lane, position);
+    public Monster(String displayName, String nme, String typ, int lvl, String lane, List<Integer> position, double bD, double dV, double dA){
+        super(displayName, nme,lvl,100,typ,lane, position);
         this.baseDamage = bD;
         this.defenseValue = dV;
         this.dodgeAbility = dA;
@@ -33,11 +33,11 @@ public class Monster extends Character{
         Random random = new Random();
         double chance = 0.002;
         if(random.heroDodge(h.getAgilityValue(),chance)){
-            System.out.println(h.getName() + "has dodged " + this.getName() + " attack!");
+            System.out.println(h.getDisplayName() + " has dodged " + this.getDisplayName() + " attack!");
         }
         else {
             h.setHP(h.getHP() - this.getBaseDamage());
-            System.out.println(this.getName() + " has attacked " + h.getName() + " for " + this.baseDamage + " damage!");
+            System.out.println(this.getDisplayName() + " has attacked " + h.getDisplayName() + " for " + this.baseDamage + " damage!");
         }
     }
 
@@ -56,13 +56,23 @@ public class Monster extends Character{
 
     public Hero heroInRange(HeroGroup HeroGroup){
         for(int i = 0 ; i < HeroGroup.getNumberOfHeros(); i++){
-            if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1))){
+            if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)) &&
+                    (this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1))
+                            || this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)+1)
+                            ||this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)-1))){
                 return HeroGroup.getPack().get(i);
-            }else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)-1)){
+            }
+            else if (this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)) &&
+                    (this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0))
+                            || this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)+1)
+                            ||this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)-1))){
                 return HeroGroup.getPack().get(i);
-            }else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)+1)){
+            }
+            else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)-1) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)+1)){
                 return HeroGroup.getPack().get(i);
             }else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0) + 1) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)+1)){
+                return HeroGroup.getPack().get(i);
+            }else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0)-1) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)-1)){
                 return HeroGroup.getPack().get(i);
             }else if(this.getCurrPos().get(0).equals(HeroGroup.getPack().get(i).getCurrPos().get(0) + 1) && this.getCurrPos().get(1).equals(HeroGroup.getPack().get(i).getCurrPos().get(1)-1)){
                 return HeroGroup.getPack().get(i);

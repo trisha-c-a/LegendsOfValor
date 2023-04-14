@@ -2,8 +2,8 @@ import java.util.List;
 
 public class Sorceror extends Hero implements FavoredSkill{
 
-    public Sorceror(String nme, String type, String lane, List<Integer> position, double mp, long exp, double sVal, double dexVal, double agVal, double gAmt){
-        super(nme, type, lane, position, mp, exp, sVal, dexVal, agVal,gAmt);
+    public Sorceror(String displayName, String nme, String type, String lane, List<Integer> position, double mp, long exp, double sVal, double dexVal, double agVal, double gAmt){
+        super(displayName, nme, type, lane, position, mp, exp, sVal, dexVal, agVal,gAmt);
     }
 
     public void updateSkill() {

@@ -10,18 +10,20 @@ public class Hero extends Character{
     public static final String ANSI_Green = "\u001B[32m";
     public static final String ANSI_Red = "\u001B[31m";
     public double MP;
+    public double ogMP; //original hero MP
     public long experiencePoints;
     public double strengthValue;
     public double dexterityValue;
     public double agilityValue;
     public double goldAmount;
-    public Item equipment;
+    public Item equipment = null;
     public Inventory bag = new Inventory();
 
     //Constructor for a default hero
     public Hero(){
         super();
         this.MP = 1000;
+        this.ogMP = this.MP;
         this.experiencePoints = 0;
         this.strengthValue = 400;
         this.dexterityValue = 500;
@@ -33,6 +35,7 @@ public class Hero extends Character{
     public Hero(double mp, long exp, double sVal, double dexVal, double agVal,double gAmt){
         super();
         this.MP = mp;
+        this.ogMP = mp;
         this.experiencePoints = exp;
         this.strengthValue = sVal;
         this.dexterityValue = dexVal;
@@ -41,9 +44,10 @@ public class Hero extends Character{
     }
 
     //Constructor for user defined hero attributes
-    public Hero(String nme, String t, String lane, List<Integer> position, double mp, long exp, double sVal, double dexVal, double agVal, double gAmt){
-        super(nme,1,100,t,lane,position);
+    public Hero(String displayName, String nme, String t, String lane, List<Integer> position, double mp, long exp, double sVal, double dexVal, double agVal, double gAmt){
+        super(displayName,nme,1,100,t,lane,position);
         this.MP = mp;
+        this.ogMP = mp;
         this.experiencePoints = exp;
         this.strengthValue = sVal;
         this.dexterityValue = dexVal;
@@ -113,43 +117,43 @@ public class Hero extends Character{
         double chance = 0.01;
         if (product.getType().equals("Weapon")) {
             if(random.monsterDodge(m.dodgeAbility,chance)){
-                System.out.println(m.getName() + "has dodged " + this.getName() + " attack!");
+                System.out.println(m.getDisplayName() + " has dodged " + this.getDisplayName() + " attack!");
             }
             else{
                 ((Weapon) product).applyWeapon(m, this.strengthValue);
-                System.out.println(this.getName() + " has attacked " + m.getName() + " for " + ((Weapon) product).getDamageValue() + " damage!");
+                System.out.println(this.getDisplayName() + " has attacked " + m.getDisplayName() + " for " + ((Weapon) product).getDamageValue() + " damage!");
             }
 
         } else if (product.getType().equals("Ice Spell")) {
             if(random.monsterDodge(m.dodgeAbility,chance)){
-                System.out.println(m.getName() + "has dodged " + this.getName() + " attack!");
+                System.out.println(m.getDisplayName() + " has dodged " + this.getDisplayName() + " attack!");
             }
             else{
                 ((IceSpell) product).applyIceSpell(m,this.dexterityValue);
-                System.out.println(this.getName() + " has attacked " + m.getName() + " for " + ((IceSpell) product).getDamage() + " damage!");
+                System.out.println(this.getDisplayName() + " has attacked " + m.getDisplayName() + " for " + ((IceSpell) product).getDamage() + " damage!");
             }
             this.getBag().removeItem(product.getType(), product.getName());
         } else if (product.getType().equals("Light Spell")) {
             if(random.monsterDodge(m.dodgeAbility,chance)){
-                System.out.println(m.getName() + "has dodged " + this.getName() + " attack!");
+                System.out.println(m.getDisplayName() + " has dodged " + this.getDisplayName() + " attack!");
             }
             else{
                 ((LightSpell) product).applyLightSpell(m,this.dexterityValue);
-                System.out.println(this.getName() + " has attacked " + m.getName() + " for " + ((LightSpell) product).getDamage() + " damage!");
+                System.out.println(this.getDisplayName() + " has attacked " + m.getDisplayName() + " for " + ((LightSpell) product).getDamage() + " damage!");
             }
             this.getBag().removeItem(product.getType(), product.getName());
         } else if (product.getType().equals("Fire Spell")) {
             if(random.monsterDodge(m.dodgeAbility,chance)){
-                System.out.println(m.getName() + "has dodged " + this.getName() + " attack!");
+                System.out.println(m.getDisplayName() + " has dodged " + this.getDisplayName() + " attack!");
             }
             else{
                 ((FireSpell) product).applyFireSpell(m,this.dexterityValue);
-                System.out.println(this.getName() + " has attacked " + m.getName() + " for " + ((FireSpell) product).getDamage() + " damage!");
+                System.out.println(this.getDisplayName() + " has attacked " + m.getDisplayName() + " for " + ((FireSpell) product).getDamage() + " damage!");
             }
             this.getBag().removeItem(product.getType(), product.getName());
         } else if (product.getType().equals("Armor")) {
             this.setHP(this.getHP()+((Armor)product).getDamageReduction());
-            System.out.println(this.getName() + " has protection from " + m.getName() + " with a damage reduction of " + ((Armor)product).getDamageReduction());
+            System.out.println(this.getDisplayName() + " has protection from " + m.getDisplayName() + " with a damage reduction of " + ((Armor)product).getDamageReduction());
         }
     }
 
@@ -158,10 +162,12 @@ public class Hero extends Character{
             System.out.println("You have nothing to pick from your inventory!");
             return true;
         }
-        if(!this.bag.isTypePresent("Weapon") || !this.bag.isTypePresent("Armor")){
+        if(!this.bag.isTypePresent("Weapon") && !this.bag.isTypePresent("Armor")){
             System.out.println("You do not have a weapon or armor to pick!");
             return true;
         }
+
+        this.bag.viewInventory();
 
         Scanner type = new Scanner(System.in);
         String itemType = "";
@@ -170,7 +176,7 @@ public class Hero extends Character{
             if(type.hasNextLine()){
                 itemType = type.nextLine();
             }
-            if(!itemType.equals("Weapon") || !itemType.equals("Armor")){
+            if(!itemType.equals("Weapon") && !itemType.equals("Armor")){
                 System.out.println("Incorrect type! Please enter 'Weapon' or 'Armor':");
             }
             else{
@@ -178,11 +184,12 @@ public class Hero extends Character{
             }
         }
 
-        String itemName ="";
+        Scanner name = new Scanner(System.in);
         this.bag.viewInventory();
         System.out.println("Please enter the name of the item: ");
+        String itemName = name.nextLine();
         this.equipment = this.bag.retrieveItem(itemType,itemName);
-
+        System.out.println("You have successfully equipped the " + this.equipment.getName());
         return true;
 
     };
@@ -196,15 +203,16 @@ public class Hero extends Character{
             return true;
         }
 
-        Scanner type = new Scanner(System.in);
+        Scanner name = new Scanner(System.in);
 
-        String itemName ="";
         this.bag.viewInventory();
         System.out.println("Please enter the name of the item: ");
+        String itemName = name.nextLine();
         Item product = this.bag.retrieveItem("Potion",itemName);
 
         boolean appliedAttribute = false;
         while(!appliedAttribute){
+            Scanner type = new Scanner(System.in);
             System.out.println("Enter attribute that you would like to increase:");
             System.out.println(((Potion)product).displayAttributeAffected());
             String p = type.nextLine();
@@ -212,31 +220,31 @@ public class Hero extends Character{
                 case "Health":
                     this.setHP(this.getHP() + ((Potion) product).getAttributeIncrease());
                     this.getBag().removeItem(product.getType(), product.getName());
-                    System.out.println(this.getName() + " has increased their HP with " + ((Potion) product).getName() + " potion! ");
+                    System.out.println(this.getDisplayName() + " has increased their HP with " + ((Potion) product).getName() + " potion! ");
                     appliedAttribute = true;
                     break;
                 case "Strength":
                     this.setStrengthValue(this.getStrengthValue() + ((Potion) product).getAttributeIncrease());
                     this.getBag().removeItem(product.getType(), product.getName());
-                    System.out.println(this.getName() + " has increased their strength with " + ((Potion) product).getName() + " potion! ");
+                    System.out.println(this.getDisplayName() + " has increased their strength with " + ((Potion) product).getName() + " potion! ");
                     appliedAttribute = true;
                     break;
                 case "Mana":
                     this.setMP(this.getMP() + ((Potion) product).getAttributeIncrease());
                     this.getBag().removeItem(product.getType(), product.getName());
-                    System.out.println(this.getName() + " has increased their MP with " + ((Potion) product).getName() + " potion! ");
+                    System.out.println(this.getDisplayName() + " has increased their MP with " + ((Potion) product).getName() + " potion! ");
                     appliedAttribute = true;
                     break;
                 case "Agility":
                     this.setAgilityValue(this.getAgilityValue() + ((Potion) product).getAttributeIncrease());
                     this.getBag().removeItem(product.getType(), product.getName());
-                    System.out.println(this.getName() + " has increased their agility with " + ((Potion) product).getName() + " potion! ");
+                    System.out.println(this.getDisplayName() + " has increased their agility with " + ((Potion) product).getName() + " potion! ");
                     appliedAttribute = true;
                     break;
                 case "Dexterity":
                     this.setDexterityValue(this.getDexterityValue() + ((Potion) product).getAttributeIncrease());
                     this.getBag().removeItem(product.getType(), product.getName());
-                    System.out.println(this.getName() + " has increased their dexterity with " + ((Potion) product).getName() + " potion! ");
+                    System.out.println(this.getDisplayName() + " has increased their dexterity with " + ((Potion) product).getName() + " potion! ");
                     appliedAttribute = true;
                     break;
                 default:
@@ -249,14 +257,23 @@ public class Hero extends Character{
         return true;
     }
     public Boolean castSpell(MonsterPack pack){
+
+        Monster m = this.monsterInRange(pack);
+        if(m==null){
+            System.out.println("No monster in range to cast spell!");
+            return true;
+        }
+
         if(this.bag.isEmpty()){
             System.out.println("You have nothing to pick from your inventory!");
             return true;
         }
-        if(!this.bag.isTypePresent("Ice Spell") || !this.bag.isTypePresent("Fire Spell") || !this.bag.isTypePresent("Light Spell")){
+        if(!this.bag.isTypePresent("Ice Spell") && !this.bag.isTypePresent("Fire Spell") && !this.bag.isTypePresent("Light Spell")){
             System.out.println("You do not have spells to pick!");
             return true;
         }
+
+        this.bag.viewInventory();
 
         Scanner type = new Scanner(System.in);
         String itemType = "";
@@ -265,25 +282,20 @@ public class Hero extends Character{
             if(type.hasNextLine()){
                 itemType = type.nextLine();
             }
-            if(!itemType.equals("Ice Spell") || !itemType.equals("Fire Spell")|| !itemType.equals("Light Spell")){
+            if(!itemType.equals("Ice Spell") && !itemType.equals("Fire Spell") && !itemType.equals("Light Spell")){
                 System.out.println("Incorrect type! Please enter 'Ice Spell', 'Fire Spell' or 'Light Spell':");
             }
             else{
                 break;
             }
+            this.bag.viewInventory();
         }
 
-        String itemName ="";
-        this.bag.viewInventory();
+        Scanner name = new Scanner(System.in);
         System.out.println("Please enter the name of the item: ");
+        String itemName = name.nextLine();
         Item magic = this.bag.retrieveItem(itemType,itemName);
-
-        Monster m = this.monsterInRange(pack);
-        if(m==null){
-            System.out.println("No monster in range to cast spell!");
-            return true;
-        }
-        attack(m,magic);
+        this.attack(m,magic);
         return true;
     };
 
@@ -313,7 +325,9 @@ public class Hero extends Character{
                     break;
                 }
                 else{
-                    System.out.println("You cannot teleport to your own lane! Please try again.");
+                    System.out.println("You cannot teleport to your own lane!");
+                    System.out.println("To go back to your lane, enter 'r' to recall to your nexus in the next round.");
+                    return true;
                 }
             }
             else{
@@ -327,10 +341,9 @@ public class Hero extends Character{
             try{
                 Scanner choice = new Scanner(System.in);
                 String option = choice.nextLine();
-                row = Integer.parseInt(option);
-                if(row<9 && row>1) {
-                    row = row-1;
-                    if (row > map.getLaneAndCharacters().get(lane).get(0).getCurrPos().get(0)) {
+                row = Integer.parseInt(option) - 1;
+                if(row<8 && row>=0) {
+                    if (row >= map.getLaneAndCharacters().get(lane).get(0).getCurrPos().get(0)) {
                         if (row >= map.getLaneAndCharacters().get(lane).get(1).getCurrPos().get(0)) {
                             break;
                         } else {
@@ -392,8 +405,7 @@ public class Hero extends Character{
             return false;
         }
         if(tool == null){
-            int dmg = this.level * 100;
-            monster.setHP(monster.getHP()+monster.getDefenseValue() - dmg);
+            System.out.println("You have no equipment to attack the monster....");
         }else{
             this.useItem(tool,monster);
         }
@@ -402,13 +414,23 @@ public class Hero extends Character{
 
     public Monster monsterInRange(MonsterPack monsterPack){
         for(int i = 0 ; i < monsterPack.getNumOfMonster(); i++){
-            if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1))){
+            if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) &&
+                    (this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1))
+                            || this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)+1)
+                    ||this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1))){
                 return monsterPack.getPack().get(i);
-            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1)){
+            }
+            else if (this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)) &&
+                    (this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0))
+                            || this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)+1)
+                            ||this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)-1))){
                 return monsterPack.getPack().get(i);
-            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)+1)){
+            }
+            else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)-1) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)+1)){
                 return monsterPack.getPack().get(i);
             }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0) + 1) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)+1)){
+                return monsterPack.getPack().get(i);
+            }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0)-1) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1)){
                 return monsterPack.getPack().get(i);
             }else if(this.getCurrPos().get(0).equals(monsterPack.getPack().get(i).getCurrPos().get(0) + 1) && this.getCurrPos().get(1).equals(monsterPack.getPack().get(i).getCurrPos().get(1)-1)){
                 return monsterPack.getPack().get(i);
@@ -456,6 +478,10 @@ public class Hero extends Character{
                                     //GETTERS AND SETTERS
     public double getMP(){
         return this.MP;
+    }
+
+    public double getOgMP(){
+        return this.ogMP;
     }
 
     public long getExperiencePoints(){

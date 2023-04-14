@@ -20,7 +20,7 @@ public class Control {
         System.out.println("q - quit game");
     }
 
-    public boolean inputControl(World world, Hero hero, MonsterPack monsterPack, String key){
+    public boolean inputControl(World world, Hero hero, MonsterPack monsterPack, String key, HeroGroup heroGroup){
         int currentX = hero.getCurrPos().get(0);
         int currentY = hero.getCurrPos().get(1);
         switch (key) {
@@ -57,14 +57,13 @@ public class Control {
             case "p":
                 return hero.consumePotion();
             case "x":
-                if(hero.attack(hero.monsterInRange(monsterPack),hero.getEquipment())){
-                    Monster m = monsterPack.removeMonster();
-                    world.removeMonster(m);
-                }
-
+                hero.attack(hero.monsterInRange(monsterPack),hero.getEquipment());
+                world.removeMonster(monsterPack.removeMonster(heroGroup));
                 return true;
             case "c":
-                return hero.castSpell(monsterPack);
+                hero.castSpell(monsterPack);
+                world.removeMonster(monsterPack.removeMonster(heroGroup));
+                return true;
             case "t":
                 return hero.teleport(world);
             case "r":
@@ -77,7 +76,7 @@ public class Control {
             case "m":
                 return world.traverseBoard(hero,currentX, currentY, key);
             case "z":
-                world.displayBoard();
+                world.displayBoard(heroGroup, monsterPack);
                 return true;
             case "q":
                 return false;

@@ -1,6 +1,8 @@
 import java.util.List;
 
 public class Paladin extends Hero implements FavoredSkill{
+    //Creates a paladin hero instance
+    //Ensures the attributes are set correctly when leveled up
 
     public Paladin(String displayName, String nme, String type, String lane, List<Integer> position, double mp, long exp, double sVal, double dexVal, double agVal, double gAmt){
         super(displayName, nme, type, lane, position, mp, exp, sVal, dexVal, agVal,gAmt);

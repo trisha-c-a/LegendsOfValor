@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Common extends Cell{
+    // heroPresent and monsterPresent shows the characters that are currently in the cell
+    // The three printing methods are used to display the cell on the map
 
 
     private String heroPresent;

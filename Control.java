@@ -1,6 +1,8 @@
 import java.util.Arrays;
 
 public class Control {
+    //This class is mainly focusing on enabling turning user input to actual game logic
+    //This class also displays possible input that could be taken from the users
     public void DisplayControls(){
         System.out.println("Here are all the options available: ");
         System.out.println("w - move up");

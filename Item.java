@@ -1,4 +1,6 @@
 abstract class Item {
+    //This class serve as the parent class for all inventory item classes like weapon, armor, potion and spell
+    //It provides the super class constructor methods to be used in the child classes and also setter and getter methods
 
     public long level;
     public double price;

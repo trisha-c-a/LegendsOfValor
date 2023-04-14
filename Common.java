@@ -27,7 +27,13 @@ public class Common extends Cell{
         else{
             this.monsterPresent = m.displayName;
         }
-        System.out.print( "P  " + this.heroPresent + "  " + this.monsterPresent + "  P");
+        if(h!=null && m != null) {
+            System.out.print( "P  " + this.heroPresent + "" + this.monsterPresent + "  P");
+        }else if(h == null && m == null){
+            System.out.print( "P  " + this.heroPresent + "  " + this.monsterPresent + "  P");
+        }else{
+            System.out.print( "P  " + this.heroPresent + " " + this.monsterPresent + "  P");
+        }
     }
     public void printThird(){System.out.print("P  P  P  P");}
 

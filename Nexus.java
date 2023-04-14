@@ -47,7 +47,13 @@ public class Nexus extends Cell{
         else{
             this.monsterPresent = m.displayName;
         }
-        System.out.print(ANSI_Blue + "N  " +ANSI_RESET + this.heroPresent + "  " + this.monsterPresent +ANSI_Blue+ "  N" + ANSI_RESET);
+        if(h!=null && m != null) {
+            System.out.print(ANSI_Blue + "N  " + ANSI_RESET + this.heroPresent + "" + this.monsterPresent + ANSI_Blue + "  N" + ANSI_RESET);
+        }else if(h == null && m == null){
+            System.out.print(ANSI_Blue + "N  " + ANSI_RESET + this.heroPresent + "  " + this.monsterPresent + ANSI_Blue + "  N" + ANSI_RESET);
+        }else{
+            System.out.print(ANSI_Blue + "N  " + ANSI_RESET + this.heroPresent + " " + this.monsterPresent + ANSI_Blue + "  N" + ANSI_RESET);
+        }
     }
     public void printThird(){System.out.print(ANSI_Blue + "N  N  N  N" + ANSI_RESET);}
 }

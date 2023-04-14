@@ -1,9 +1,9 @@
-# CS611-Assignment 3
-LMH
+# CS611-Assignment 4
+## Legends of Valor
 ---------------------------------------------------------------------------
-Chun To Pun
-chuntpun@bu.edu
-U41461275
+Chun To Pun					Trisha Celine Anil
+chuntpun@bu.edu				tcanil@bu.edu
+U41461275					U12239724
 
 ## Files
 ---------------------------------------------------------------------------
@@ -53,6 +53,8 @@ World.java -- Creates the map for the game
 ---------------------------------------------------------------------------
 1. Unzip the files
 2. Run the following instructions:
+	- javac *.java
+	- java Main
 #############
 
 

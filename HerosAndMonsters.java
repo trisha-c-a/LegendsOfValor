@@ -4,6 +4,9 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class HerosAndMonsters implements GameDetails{
+    // This class is the class of the game Legends and Valor
+    // It contains the rules and the main game play method to initiate the game
+    // It also implements the check for winning conditions as required by the interface it implements
 
     public HerosAndMonsters(){
         System.out.println("Welcome to Legends of Valor!");

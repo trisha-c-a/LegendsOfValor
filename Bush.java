@@ -39,7 +39,13 @@ public class Bush extends Cell implements ModifyAttribute{
         else{
             this.monsterPresent = m.displayName;
         }
-        System.out.print( "B  " + this.heroPresent + "  " + this.monsterPresent + "  B");
+        if(h!=null && m != null) {
+            System.out.print( "B  " + this.heroPresent + "" + this.monsterPresent + "  B");
+        }else if(h == null && m == null){
+            System.out.print( "B  " + this.heroPresent + "  " + this.monsterPresent + "  B");
+        }else{
+            System.out.print( "B  " + this.heroPresent + " " + this.monsterPresent + "  B");
+        }
     }
     public void printThird(){System.out.print("B  B  B  B");}
 }

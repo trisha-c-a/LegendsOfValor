@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class Reader {
+    //This class handles the reading of all text files and display the information
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_YELLOW = "\u001B[33m";

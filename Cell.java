@@ -1,4 +1,7 @@
 public class Cell {
+    //This is the parent class of all cells
+    //It includes name attribute which is used as a type for each cell
+    //It also has 3 print methods to be override by the child classes
 
     public String name;
 

@@ -1,4 +1,7 @@
 public class Weapon extends Item{
+    // The damageValue is used to calculate the amount of damage deal after equiping the weapon
+    // The numHands is used to show the number of handles of the weapon
+    // Weapon constructor takes the super class Item constructor to set the price and level requirements and adds damageValue and numHands attributes to it
 
     public double damageValue;
     public int numHands;

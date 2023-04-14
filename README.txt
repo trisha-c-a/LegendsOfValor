@@ -2,7 +2,7 @@
 ## Legends of Valor
 ---------------------------------------------------------------------------
 Chun To Pun					Trisha Celine Anil
-chuntpun@bu.edu				tcanil@bu.edu
+chuntpun@bu.edu					tcanil@bu.edu
 U41461275					U12239724
 
 ## Files

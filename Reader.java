@@ -36,13 +36,13 @@ public class Reader {
         List<List<String>> heroes2 = new ArrayList<>();
         List<List<String>> heroes3 = new ArrayList<>();
 
-        readFile(heroes1, "Legends_Monsters_and_Heroes/Paladins.txt");
+        readFile(heroes1, "Paladins.txt");
         final_heroes.put("Paladins", heroes1);
 
-        readFile(heroes2, "Legends_Monsters_and_Heroes/Warriors.txt");
+        readFile(heroes2, "Warriors.txt");
         final_heroes.put("Warriors", heroes2);
 
-        readFile(heroes3, "Legends_Monsters_and_Heroes/Sorcerers.txt");
+        readFile(heroes3, "Sorcerers.txt");
         final_heroes.put("Sorcerers", heroes3);
 
         System.out.println("Here are all the heroes available to you ->");
@@ -66,13 +66,13 @@ public class Reader {
         List<List<String>> monsters2 = new ArrayList<>();
         List<List<String>> monsters3 = new ArrayList<>();
 
-        readFile(monsters1, "Legends_Monsters_and_Heroes/Dragons.txt");
+        readFile(monsters1, "Dragons.txt");
         final_monsters.put("Dragons", monsters1);
 
-        readFile(monsters2, "Legends_Monsters_and_Heroes/Exoskeletons.txt");
+        readFile(monsters2, "Exoskeletons.txt");
         final_monsters.put("Exoskeletons", monsters2);
 
-        readFile(monsters3, "Legends_Monsters_and_Heroes/Spirits.txt");
+        readFile(monsters3, "Spirits.txt");
         final_monsters.put("Spirits", monsters3);
 
         for (String key : final_monsters.keySet()) {
@@ -94,27 +94,27 @@ public class Reader {
         List<List<List<String>>> market = new ArrayList<>();
 
         List<List<String>> armory = new ArrayList<>();
-        readFile(armory, "Legends_Monsters_and_Heroes/Armory.txt");
+        readFile(armory, "Armory.txt");
         market.add(armory);
 
         List<List<String>> potion = new ArrayList<>();
-        readFile(potion, "Legends_Monsters_and_Heroes/Potions.txt");
+        readFile(potion, "Potions.txt");
         market.add(potion);
 
         List<List<String>> fireSpell = new ArrayList<>();
-        readFile(fireSpell, "Legends_Monsters_and_Heroes/FireSpells.txt");
+        readFile(fireSpell, "FireSpells.txt");
         market.add(fireSpell);
 
         List<List<String>> iceSpell = new ArrayList<>();
-        readFile(iceSpell, "Legends_Monsters_and_Heroes/IceSpells.txt");
+        readFile(iceSpell, "IceSpells.txt");
         market.add(iceSpell);
 
         List<List<String>> lightSpell = new ArrayList<>();
-        readFile(lightSpell, "Legends_Monsters_and_Heroes/LightningSpells.txt");
+        readFile(lightSpell, "LightningSpells.txt");
         market.add(lightSpell);
 
         List<List<String>> weapon = new ArrayList<>();
-        readFile(weapon, "Legends_Monsters_and_Heroes/Weaponry.txt");
+        readFile(weapon, "Weaponry.txt");
         market.add(weapon);
 
         return market;

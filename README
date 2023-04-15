@@ -64,6 +64,8 @@ World.java -- Creates the map for the game
 ---------------------------------------------------------------------------
 1. Unzip the files
 2. Run the following instructions:
+    - javac *.java
+    - java Main
 #############
 
 

@@ -1,13 +1,14 @@
 import java.util.List;
 
 public class Monster extends Character{
+
     //This class creates instance of monster character
     //Includes different getter and setter methods to its attributes
-    //It also include methods to ensure that the actions performed by the monster is valid and allow by the game rules
+    //It also includes methods to ensure that the actions performed by the monster is valid and allow by the game rules
     //Includes method to allow monster to attack hero
-    public double baseDamage;
-    public double defenseValue;
-    public double dodgeAbility;
+    private double baseDamage;
+    private double defenseValue;
+    private double dodgeAbility;
 
     //Constructor for default monster
     public Monster(){

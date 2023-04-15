@@ -1,17 +1,18 @@
 import java.util.ArrayList;
 
 public class Nexus extends Cell{
+
     // heroPresent and monsterPresent shows the characters that are currently in the cell
     // The three printing methods are used to display the cell on the map
     // This class also contains method to ensure the hero will be able to access Market in their own nexus cell
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_Blue = "\u001B[34m";
-    public static final String ANSI_Green = "\u001B[32m";
-    public static final String ANSI_Red = "\u001B[31m";
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_Blue = "\u001B[34m";
+    private static final String ANSI_Green = "\u001B[32m";
+    private static final String ANSI_Red = "\u001B[31m";
 
-    String hostCharacter;
-    Market market;
+    private String hostCharacter;
+    private Market market;
 
     private String heroPresent;
 
@@ -33,27 +34,21 @@ public class Nexus extends Cell{
 
 
 
-    public void printFirst(){System.out.print(ANSI_Blue + "N  N  N  N" + ANSI_RESET);}
+    public void printFirst(){System.out.print(ANSI_Blue + "N - N - N" + ANSI_RESET);}
     public void printSecond(Hero h, Monster m){
         if(h == null){
-            this.heroPresent = " ";
+            this.heroPresent = "  ";
         }
         else{
-            this.heroPresent = h.displayName;
+            this.heroPresent = h.getDisplayName();
         }
         if(m == null){
-            this.monsterPresent = " ";
+            this.monsterPresent = "  ";
         }
         else{
-            this.monsterPresent = m.displayName;
+            this.monsterPresent = m.getDisplayName();
         }
-        if(h!=null && m != null) {
-            System.out.print(ANSI_Blue + "N  " + ANSI_RESET + this.heroPresent + "" + this.monsterPresent + ANSI_Blue + "  N" + ANSI_RESET);
-        }else if(h == null && m == null){
-            System.out.print(ANSI_Blue + "N  " + ANSI_RESET + this.heroPresent + "  " + this.monsterPresent + ANSI_Blue + "  N" + ANSI_RESET);
-        }else{
-            System.out.print(ANSI_Blue + "N  " + ANSI_RESET + this.heroPresent + " " + this.monsterPresent + ANSI_Blue + "  N" + ANSI_RESET);
-        }
+        System.out.print(ANSI_Blue + "| " +ANSI_RESET + this.heroPresent + " " + this.monsterPresent +ANSI_Blue+ " |" + ANSI_RESET);
     }
-    public void printThird(){System.out.print(ANSI_Blue + "N  N  N  N" + ANSI_RESET);}
+    public void printThird(){System.out.print(ANSI_Blue + "N - N - N" + ANSI_RESET);}
 }

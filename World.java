@@ -2,18 +2,13 @@ import java.util.*;
 
 public class World {
     //This class creates the map of world where the game takes place
-    //Contains method to display the map/board and also handles appropriate actions like attibute update when a move is taken
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_Blue = "\u001B[34m";
-    public static final String ANSI_Green = "\u001B[32m";
-    public static final String ANSI_Red = "\u001B[31m";
-    public Cell [][] board;
-    public int dimension = 8;
-    public int monsterNexus_x = 0;
+    //Contains method to display the map/board and also handles appropriate actions like attribute update when a move is taken
+    private Cell [][] board;
+    private int dimension = 8;
+    private int monsterNexus_x = 0;
 
-    public int heroNexus_x = 7;
-    public HashMap<String, List<Character>> laneAndCharacters = new HashMap<>();
+    private int heroNexus_x = 7;
+    private HashMap<String, List<Character>> laneAndCharacters = new HashMap<>();
     //{laneName:[hero,monster]}
 
     public World(){
@@ -73,7 +68,7 @@ public class World {
                 String type = random.cellGeneration();
                 switch (type) {
                     case "P":
-                        board[i][j] = new Common(type);
+                        board[i][j] = new Plain(type);
                         break;
                     case "B":
                         board[i][j] = new Bush(type);
@@ -97,7 +92,7 @@ public class World {
                         if(board[i][j].getName().equals("N")) ((Nexus)board[i][j]).printFirst();
                         else if(board[i][j].getName() == "X") ((Inaccessible)board[i][j]).printFirst();
                         else if(board[i][j].getName() == "K") ((Koulou)board[i][j]).printFirst();
-                        else if(board[i][j].getName() == "P") ((Common)board[i][j]).printFirst();
+                        else if(board[i][j].getName() == "P") ((Plain)board[i][j]).printFirst();
                         else if(board[i][j].getName() == "B") ((Bush)board[i][j]).printFirst();
                         else if(board[i][j].getName() == "C") ((Cave)board[i][j]).printFirst();
                     }else if(k==1){
@@ -118,14 +113,14 @@ public class World {
                         if(board[i][j].getName().equals("N")) ((Nexus)board[i][j]).printSecond(hero, monster);
                         else if(board[i][j].getName() == "X") ((Inaccessible)board[i][j]).printSecond();
                         else if(board[i][j].getName() == "K") ((Koulou)board[i][j]).printSecond(hero, monster);
-                        else if(board[i][j].getName() == "P") ((Common)board[i][j]).printSecond(hero, monster);
+                        else if(board[i][j].getName() == "P") ((Plain)board[i][j]).printSecond(hero, monster);
                         else if(board[i][j].getName() == "B") ((Bush)board[i][j]).printSecond(hero, monster);
                         else if(board[i][j].getName() == "C") ((Cave)board[i][j]).printSecond(hero, monster);
                     }else if(k==2){
                         if(board[i][j].getName().equals("N")) ((Nexus)board[i][j]).printThird();
                         else if(board[i][j].getName() == "X") ((Inaccessible)board[i][j]).printThird();
                         else if(board[i][j].getName() == "K") ((Koulou)board[i][j]).printThird();
-                        else if(board[i][j].getName() == "P") ((Common)board[i][j]).printThird();
+                        else if(board[i][j].getName() == "P") ((Plain)board[i][j]).printThird();
                         else if(board[i][j].getName() == "B") ((Bush)board[i][j]).printThird();
                         else if(board[i][j].getName() == "C") ((Cave)board[i][j]).printThird();
                     }
@@ -146,8 +141,8 @@ public class World {
             System.out.println("You are trying to exit the world boundary!");
             return true;
         }
-        else if(board[currentX][currentY].name.equals("X")){ System.out.println("Inaccessible zone encountered!"); return true;}
-        else if(board[currentX][currentY].name.equals("N")){
+        else if(board[currentX][currentY].getName().equals("X")){ System.out.println("Inaccessible zone encountered!"); return true;}
+        else if(board[currentX][currentY].getName().equals("N")){
             this.updateHeroAttributes(hero);
             hero.setCurrPos(Arrays.asList(currentX,currentY));
             if(token.equals("m")){
@@ -158,13 +153,13 @@ public class World {
 
         this.updateHeroAttributes(hero);
         hero.setCurrPos(Arrays.asList(currentX,currentY));
-        if(board[currentX][currentY].name.equals("B")){
+        if(board[currentX][currentY].getName().equals("B")){
             ((Bush) board[currentX][currentY]).entry(hero);
         }
-        else if(board[currentX][currentY].name.equals("C")){
+        else if(board[currentX][currentY].getName().equals("C")){
             ((Cave) board[currentX][currentY]).entry(hero);
         }
-        else if(board[currentX][currentY].name.equals("K")){
+        else if(board[currentX][currentY].getName().equals("K")){
             ((Koulou) board[currentX][currentY]).entry(hero);
         }
         return true;
@@ -189,6 +184,22 @@ public class World {
 
         for(int j=0;j<pack.getNumOfMonster();j++){
             this.addCharacter(pack.getPack().get(j));
+        }
+    }
+
+    public boolean checkIfOccupied(HeroGroup heroGroup, int x, int y){
+        for(Hero h: heroGroup.getPack()){
+            if(h.getCurrPos().get(0) == x && h.getCurrPos().get(1) == y){
+                System.out.println("The cell is currently occupied!");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void updateCharacters(HeroGroup group, MonsterPack pack){
+        for(int i=0;i<group.getNumberOfHeros();i++){
+
         }
     }
 

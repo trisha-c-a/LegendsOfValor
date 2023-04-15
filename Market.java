@@ -7,7 +7,7 @@ import java.util.Scanner;
 //(5) Enter market (contain options for what the player would like to do)
 public class Market extends Cell{
 
-    public Inventory store = new Inventory("M");
+    private Inventory store = new Inventory("M");
     public Market(String name) {
         super(name);
     }

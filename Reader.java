@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.util.*;
 
 public class Reader {
+
     //This class handles the reading of all text files and display the information
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_Blue = "\u001B[34m";
-    public static final String ANSI_Green = "\u001B[32m";
-    public static final String ANSI_Red = "\u001B[31m";
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_Blue = "\u001B[34m";
+    private static final String ANSI_Green = "\u001B[32m";
+    private static final String ANSI_Red = "\u001B[31m";
 
     public void readFile(List<List<String>> all, String path){
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
@@ -28,7 +29,6 @@ public class Reader {
         }
     }
 
-    //TODO create clean looking printing table
     public Map<String, List<List<String>>> getHeroDetails(){
 
         Map<String, List<List<String>>> final_heroes = new HashMap<>();
@@ -51,7 +51,6 @@ public class Reader {
             System.out.println(key + "->");
             for (List<String> hero : final_heroes.get(key)) {
                 System.out.println("Name: " + hero.get(0) + ANSI_Blue + " Mana: " + hero.get(1) + ANSI_RESET + ANSI_Red + " Strength: " + hero.get(2) + " Agility: " + hero.get(3) + " Dexterity: " + hero.get(4) + ANSI_RESET + ANSI_YELLOW + " Starting_Money: " + hero.get(5) + ANSI_RESET + ANSI_Green + " Starting_Experience: " + hero.get(6) + ANSI_RESET);
-//                 System.out.format("Name: %s, Mana: %s, Strength: %s, Agility: %s, Dexterity: %s, Starting_Money: %s, Starting_Experience: %s\n", hero.get(0), hero.get(1), hero.get(2), hero.get(3), hero.get(4), hero.get(5), hero.get(6));
             }
         }
 

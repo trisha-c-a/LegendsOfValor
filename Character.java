@@ -7,17 +7,17 @@ import java.util.List;
 //increase character level
 //getters and setters to access/update attributes
 abstract class Character {
-    public String name;
-    public int level;
-    public String displayName;
-    public double HP;
-    public String type;
-    public boolean isFainted = false;
+    private String name;
+    private int level;
+    private String displayName;
+    private double HP;
+    private String type;
+    private boolean isFainted = false;
 
-    public String lane;
+    private String lane;
 
-    public List<Integer> currPos = new ArrayList<>(2);
-    public List<Integer> nexusPos = new ArrayList<>(2);
+    private List<Integer> currPos = new ArrayList<>(2);
+    private List<Integer> nexusPos = new ArrayList<>(2);
 
     public Character(){
         name = "Null";

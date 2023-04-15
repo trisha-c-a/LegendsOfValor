@@ -1,13 +1,10 @@
 import java.util.*;
 public class Bush extends Cell implements ModifyAttribute{
-    // heroPresent and monsterPresent shows the characters that are currently in the cell
+
     // entry() method takes care of the ability increase when hero enters
     // exit() method resets the ability of hero when it leaves
     // The three printing methods are used to display the cell on the map
 
-    private String heroPresent;
-
-    private String monsterPresent;
     public Bush(String name){
         super(name);
     }
@@ -25,27 +22,21 @@ public class Bush extends Cell implements ModifyAttribute{
         System.out.println("Updated dexterity: " + h.getDexterityValue());
     }
 
-    public void printFirst(){System.out.print("B  B  B  B");}
+    public void printFirst(){System.out.print("B - B - B");}
     public void printSecond(Hero h, Monster m){
         if(h == null){
-            this.heroPresent = " ";
+            super.setHeroPresent("  ");
         }
         else{
-            this.heroPresent = h.displayName;
+            super.setHeroPresent(h.getDisplayName());
         }
         if(m == null){
-            this.monsterPresent = " ";
+            super.setMonsterPresent("  ");
         }
         else{
-            this.monsterPresent = m.displayName;
+            super.setMonsterPresent(m.getDisplayName());
         }
-        if(h!=null && m != null) {
-            System.out.print( "B  " + this.heroPresent + "" + this.monsterPresent + "  B");
-        }else if(h == null && m == null){
-            System.out.print( "B  " + this.heroPresent + "  " + this.monsterPresent + "  B");
-        }else{
-            System.out.print( "B  " + this.heroPresent + " " + this.monsterPresent + "  B");
-        }
+        System.out.print( "| " + super.getHeroPresent() + " " + super.getMonsterPresent() + " |");
     }
-    public void printThird(){System.out.print("B  B  B  B");}
+    public void printThird(){System.out.print("B - B - B");}
 }

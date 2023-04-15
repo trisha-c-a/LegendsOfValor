@@ -1,15 +1,8 @@
-import java.util.ArrayList;
-
 public class Koulou extends Cell implements ModifyAttribute{
-    
-    // heroPresent and monsterPresent shows the characters that are currently in the cell
+
     // entry() method takes care of the ability increase when hero enters
     // exit() method resets the ability of hero when it leaves
     // The three printing methods are used to display the cell on the map
-
-    private String heroPresent;
-
-    private String monsterPresent;
 
     public Koulou(String name){
         super(name);
@@ -30,27 +23,21 @@ public class Koulou extends Cell implements ModifyAttribute{
         System.out.println("Updated strength: " + h.getStrengthValue());
     }
 
-    public void printFirst(){System.out.print("K  K  K  K");}
+    public void printFirst(){System.out.print("K - K - K");}
     public void printSecond(Hero h, Monster m){
         if(h == null){
-            this.heroPresent = " ";
+            super.setHeroPresent("  ");
         }
         else{
-            this.heroPresent = h.displayName;
+            super.setHeroPresent(h.getDisplayName());
         }
         if(m == null){
-            this.monsterPresent = " ";
+            super.setMonsterPresent("  ");
         }
         else{
-            this.monsterPresent = m.displayName;
+            super.setMonsterPresent(m.getDisplayName());
         }
-        if(h!=null && m != null) {
-            System.out.print( "K  " + this.heroPresent + "" + this.monsterPresent + "  K");
-        }else if(h == null && m == null){
-            System.out.print( "K  " + this.heroPresent + "  " + this.monsterPresent + "  K");
-        }else{
-            System.out.print( "K  " + this.heroPresent + " " + this.monsterPresent + "  K");
-        }
+        System.out.print( "| " + super.getHeroPresent() + " " + super.getMonsterPresent() + " |");
     }
-    public void printThird(){System.out.print("K  K  K  K");}
+    public void printThird(){System.out.print("K - K - K");}
 }

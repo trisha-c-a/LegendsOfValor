@@ -1,11 +1,12 @@
 abstract class Item {
+
     //This class serve as the parent class for all inventory item classes like weapon, armor, potion and spell
     //It provides the super class constructor methods to be used in the child classes and also setter and getter methods
 
-    public long level;
-    public double price;
-    public String name;
-    public String type;
+    private long level;
+    private double price;
+    private String name;
+    private String type;
 
     public Item(long l, double p, String n, String t){
         this.level = l;
@@ -36,9 +37,6 @@ abstract class Item {
 
     public void setLevel(long l){
         this.level = l;
-    }
-    public void setPrice(double p){
-        this.price = p;
     }
     public void setName(String n){
         this.name = n;

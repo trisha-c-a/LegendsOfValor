@@ -1,4 +1,5 @@
 public interface FavoredSkill {
-    //This interface is used by monsters to set the base damage
+
+    //Set the base damage for the monster type Exoskeleton
     public void updateSkill();
 }

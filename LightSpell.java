@@ -1,5 +1,6 @@
 public class LightSpell extends Spell{
-    //Creates an instance of FireSpell item
+
+    //Creates an instance of LightSpell item
     //Provides function to allow for usage of the spell
     public LightSpell(String n, double p, long l, double d, double mp) {
         super(l, p, n, "Light Spell", d, mp);

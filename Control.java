@@ -1,6 +1,5 @@
-import java.util.Arrays;
-
 public class Control {
+
     //This class is mainly focusing on enabling turning user input to actual game logic
     //This class also displays possible input that could be taken from the users
     public void DisplayControls(){
@@ -27,29 +26,29 @@ public class Control {
         int currentY = hero.getCurrPos().get(1);
         switch (key) {
             case "w":
-                if(hero.heroValidMove(monsterPack)){
-                    currentX -= 1;
+                currentX -= 1;
+                if(hero.heroValidMove(monsterPack) && !world.checkIfOccupied(heroGroup, currentX, currentY)){
                     return world.traverseBoard(hero, currentX, currentY, key);
                 }else{
                     return true;
                 }
             case "a":
-                if(hero.heroValidMove(monsterPack)){
-                    currentY -= 1;
+                currentY -= 1;
+                if(hero.heroValidMove(monsterPack) && !world.checkIfOccupied(heroGroup, currentX, currentY)){
                     return world.traverseBoard(hero, currentX, currentY, key);
                 }else{
                     return true;
                 }
             case "s":
-                if(hero.heroValidMove(monsterPack)){
-                    currentX += 1;
+                currentX += 1;
+                if(hero.heroValidMove(monsterPack) && !world.checkIfOccupied(heroGroup, currentX, currentY)){
                     return world.traverseBoard(hero, currentX, currentY, key);
                 }else{
                     return true;
                 }
             case "d":
-                if(hero.heroValidMove(monsterPack)){
-                    currentY += 1;
+                currentY += 1;
+                if(hero.heroValidMove(monsterPack) && !world.checkIfOccupied(heroGroup, currentX, currentY)){
                     return world.traverseBoard(hero, currentX, currentY, key);
                 }else{
                     return true;
@@ -67,7 +66,7 @@ public class Control {
                 world.removeMonster(monsterPack.removeMonster(heroGroup));
                 return true;
             case "t":
-                return hero.teleport(world);
+                return hero.teleport(world, heroGroup);
             case "r":
                 return hero.recall();
             case "i":

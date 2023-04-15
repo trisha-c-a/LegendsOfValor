@@ -1,10 +1,11 @@
 abstract class Spell extends Item{
+
     //This is the parent class of all spell types
-    //This class contains the constructor to setup the basic attributes of cells like level, price, name, type etc.
+    //This class contains the constructor to set up the basic attributes of cells like level, price, name, type etc.
     //Also provides getter methods and action methods to allow hero to cast spell on monster
 
-    public double damage;
-    public double MP;
+    private double damage;
+    private double MP;
     public Spell(long l, double p, String n, String t, double d, double mp) {
         super(l, p, n, t);
         this.damage = d;

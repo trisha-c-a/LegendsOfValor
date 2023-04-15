@@ -1,5 +1,6 @@
 public class IceSpell extends Spell{
-    //Creates an instance of FireSpell item
+
+    //Creates an instance of IceSpell item
     //Provides function to allow for usage of the spell
     public IceSpell(String n, double p, long l, double d, double mp) {
         super(l, p, n, "Ice Spell", d, mp);

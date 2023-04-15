@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 //(3) Remove item from inventory or remove one of item if multiple of the same item exists
 //(4) Display inventory
 public class Inventory{
-    public HashMap<String, HashMap<Item,Integer>> inventory = new HashMap<>();
+    private HashMap<String, HashMap<Item,Integer>> inventory = new HashMap<>();
 
     public Inventory(){
     }
@@ -19,7 +19,6 @@ public class Inventory{
         Reader reader = new Reader();
         List<List<List<String>>> marketOptions = reader.getMarketDetails();
         //For Armor
-
         List<List<String>> armor = marketOptions.get(0);
         int randomNum = ThreadLocalRandom.current().nextInt(0, armor.size());
         this.addItem("Armor", new Armor(armor.get(randomNum).get(0), Double.parseDouble(armor.get(randomNum).get(1)), Long.parseLong(armor.get(randomNum).get(2)), Long.parseLong(armor.get(randomNum).get(3))));
@@ -47,9 +46,6 @@ public class Inventory{
         //For Weapon
         List<List<String>> weapon = marketOptions.get(5);
         randomNum = ThreadLocalRandom.current().nextInt(0, weapon.size());
-        while(Long.parseLong(weapon.get(randomNum).get(2)) > 1){
-            randomNum = ThreadLocalRandom.current().nextInt(0, weapon.size());
-        }
         this.addItem("Weapon", new Weapon(weapon.get(randomNum).get(0), Double.parseDouble(weapon.get(randomNum).get(1)), Long.parseLong(weapon.get(randomNum).get(2)), Long.parseLong(weapon.get(randomNum).get(3)), Integer.parseInt(weapon.get(randomNum).get(4))));
 
     }

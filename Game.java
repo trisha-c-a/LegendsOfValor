@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class Game {
+
     //This is the super class of all games
     //It provides the user the ability to choose the game they want to play
 
@@ -14,7 +15,7 @@ public class Game {
             Scanner option = new Scanner(System.in);
             String choice = option.nextLine();
             if(choice.equals("1")){
-                new HerosAndMonsters();
+                new LegendsOfValor();
                 break;
             }
             else if(choice.equals("q")){

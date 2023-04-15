@@ -1,22 +1,13 @@
 public class Potion extends Item{
-    //This class creates the potion instance
-    //Methods included allows for calculation of the affected attribute of the potion and also getting information about the potion
-    public int attributeIncrease;
-    public String attributeAffected;
+
+    //Creates a paladin hero instance
+    //Ensures the attributes are set correctly when leveled up
+    private int attributeIncrease;
+    private String attributeAffected;
     public Potion(String n, double p, long l, int aI, String aA) {
         super(l, p, n, "Potion");
         this.attributeIncrease = aI;
         this.attributeAffected = aA;
-    }
-
-    public String displayAttributeAffected(){
-
-//        String temp = attributeAffected[0];
-//
-//        for(int i = 0;i<attributeAffected.length;i++){
-//            temp = temp + ", " + attributeAffected[i];
-//        }
-        return this.attributeAffected;
     }
 
     public int getAttributeIncrease(){

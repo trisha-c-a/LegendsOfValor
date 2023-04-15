@@ -1,9 +1,21 @@
-# CS611-Assignment 3
-LMH
+# CS611-Assignment #4
+## Legends of Valor
 ---------------------------------------------------------------------------
-Chun To Pun
-chuntpun@bu.edu
-U41461275
+Chun To Pun                         Trisha Celine Anil
+chuntpun@bu.edu                     tcanil@bu.edu
+U41461275                           U12239724
+
+## Notes
+---------------------------------------------------------------------------
+(1) UML Diagram: The diagram has been designed partly using IntelliJ.
+                 Blue arrows refer to inheritance relationships between classes.
+                 Green arrows refer to a relationship between an interface and a class.
+(2) Extendibility: Using existing classes, new MOBA games can be developed and initialized in the game class.
+(3) Design Changes:
+        - Cave, Koulou, Bush and Nexus classes: Created to account for the new game specifications
+        - LegendsOfValor: Designed to hold game play of legends of valor based on specifications
+(4) Bonus: Added colour to the game
+
 
 ## Files
 ---------------------------------------------------------------------------
@@ -11,7 +23,6 @@ Main.java -- create Legends and valor game class and creates a instance. Calls p
 Game.java -- parent class of Legends and Valor, has attributes name.
 HerosAndMonsters.java -- Legends and Valor Game class.
 Armory.java -- Child class of Item class, has attribute relative to armor
-Battle Interface -- Implemented by Heroes class and Monsters Class
 Bush.java -- Creates an instance of bush cell which increase the dexterity of Hero when entered implements ModifyAttribute interface
 Cave.java -- Creates an instance of cave cell which increase the agility of Hero when entered implements Modify Attribute interface
 Cell.java -- parent class of all cell types

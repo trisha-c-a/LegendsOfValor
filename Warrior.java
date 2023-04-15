@@ -1,6 +1,7 @@
 import java.util.List;
 
 public class Warrior extends Hero implements FavoredSkill{
+
     //Creates a warrior hero instance
     //Ensures the attributes are set correctly when leveled up
 

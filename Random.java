@@ -1,6 +1,7 @@
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Random {
+
     //This class enables all events in the game that involves randomness including
     //dodge chances, cell generation
     public String cellGeneration(){
@@ -25,14 +26,6 @@ public class Random {
         double randomNum = ThreadLocalRandom.current().nextInt(0, 100);
         if(randomNum/100.0 <= probability) return true;
         return false;
-    }
-
-    public boolean isFight(){
-        int randomNum = ThreadLocalRandom.current().nextInt(0, 10);
-        if(randomNum < 8){
-            return true;
-        }
-        return  false;
     }
 
 }

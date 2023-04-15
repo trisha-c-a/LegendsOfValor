@@ -3,13 +3,14 @@ import java.util.*;
 import static java.lang.Math.max;
 
 public class HeroGroup implements Group{
+
     //This class represents the group of heroes created by the heroes
     //This class helps initiate hero instances by taking input from the users
     //It also includes different methods to allow for actions on heroes and display hero statistics
-    public int numberOfHeros;
-    public List<Integer> boardPos = Arrays.asList(0,0);
+    private int numberOfHeros;
+    private List<Integer> boardPos = Arrays.asList(0,0);
 
-    public List<Hero> pack = new ArrayList<>();
+    private List<Hero> pack = new ArrayList<>();
 
     public HeroGroup(){
         this.numberOfHeros = 3;
@@ -217,7 +218,7 @@ public class HeroGroup implements Group{
         return null;
     }
 
-    public void updateHerosPostBattle(int monsterLevel){
+    public void updateHerosAttributes(int monsterLevel){
         for (Hero hero : pack) {
             hero.roundUpdate(monsterLevel);
             if (hero instanceof Warrior) {

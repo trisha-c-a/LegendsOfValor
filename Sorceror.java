@@ -1,6 +1,7 @@
 import java.util.List;
 
 public class Sorceror extends Hero implements FavoredSkill{
+
     //Creates a Sorceror hero instance
     //Ensures the attributes are set correctly when leveled up
 

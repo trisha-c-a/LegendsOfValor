@@ -4,24 +4,24 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Hero extends Character{
+
     //This class contains constructor methods of the hero instance including all attributes related
-    //This class also provide getter and setter methods for all attributes
     //Other methods makes sure the hero acts and update their attributes and stats properly during game
     //This class also contains methods to allow the hero to use Inventory items like potions, armor, weapon, spells
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_Blue = "\u001B[34m";
-    public static final String ANSI_Green = "\u001B[32m";
-    public static final String ANSI_Red = "\u001B[31m";
-    public double MP;
-    public double ogMP; //original hero MP
-    public long experiencePoints;
-    public double strengthValue;
-    public double dexterityValue;
-    public double agilityValue;
-    public double goldAmount;
-    public Item equipment = null;
-    public Inventory bag = new Inventory();
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_Blue = "\u001B[34m";
+    private static final String ANSI_Green = "\u001B[32m";
+    private static final String ANSI_Red = "\u001B[31m";
+    private double MP;
+    private double ogMP; //original hero MP
+    private long experiencePoints;
+    private double strengthValue;
+    private double dexterityValue;
+    private double agilityValue;
+    private double goldAmount;
+    private Item equipment = null;
+    private Inventory bag = new Inventory();
 
     //Constructor for a default hero
     public Hero(){
@@ -120,7 +120,7 @@ public class Hero extends Character{
         Random random = new Random();
         double chance = 0.01;
         if (product.getType().equals("Weapon")) {
-            if(random.monsterDodge(m.dodgeAbility,chance)){
+            if(random.monsterDodge(m.getDodgeAbility(),chance)){
                 System.out.println(m.getDisplayName() + " has dodged " + this.getDisplayName() + " attack!");
             }
             else{
@@ -129,7 +129,7 @@ public class Hero extends Character{
             }
 
         } else if (product.getType().equals("Ice Spell")) {
-            if(random.monsterDodge(m.dodgeAbility,chance)){
+            if(random.monsterDodge(m.getDodgeAbility(),chance)){
                 System.out.println(m.getDisplayName() + " has dodged " + this.getDisplayName() + " attack!");
             }
             else{
@@ -138,7 +138,7 @@ public class Hero extends Character{
             }
             this.getBag().removeItem(product.getType(), product.getName());
         } else if (product.getType().equals("Light Spell")) {
-            if(random.monsterDodge(m.dodgeAbility,chance)){
+            if(random.monsterDodge(m.getDodgeAbility(),chance)){
                 System.out.println(m.getDisplayName() + " has dodged " + this.getDisplayName() + " attack!");
             }
             else{
@@ -147,7 +147,7 @@ public class Hero extends Character{
             }
             this.getBag().removeItem(product.getType(), product.getName());
         } else if (product.getType().equals("Fire Spell")) {
-            if(random.monsterDodge(m.dodgeAbility,chance)){
+            if(random.monsterDodge(m.getDodgeAbility(),chance)){
                 System.out.println(m.getDisplayName() + " has dodged " + this.getDisplayName() + " attack!");
             }
             else{
@@ -218,7 +218,7 @@ public class Hero extends Character{
         while(!appliedAttribute){
             Scanner type = new Scanner(System.in);
             System.out.println("Enter attribute that you would like to increase:");
-            System.out.println(((Potion)product).displayAttributeAffected());
+            System.out.println(((Potion)product).getAttributeAffected());
             String p = type.nextLine();
             switch (p) {
                 case "Health":
@@ -311,88 +311,101 @@ public class Hero extends Character{
         return monsters.retrieveCharacter(choice);
     }
 
-    public boolean teleport(World map){
+    public boolean teleport(World map, HeroGroup heroGroup) {
         System.out.println("These are the lanes you can teleport to: ");
-        for(Map.Entry<String, List<Character>> set:map.getLaneAndCharacters().entrySet()) {
-            if(!this.lane.equals(set.getKey())){
+        for (Map.Entry<String, List<Character>> set : map.getLaneAndCharacters().entrySet()) {
+            if (!this.getLane().equals(set.getKey())) {
                 System.out.println(set.getKey());
             }
         }
 
         String lane = "";
-        while(true) {
+        while (true) {
             System.out.println("Enter the name of the lane you would like to teleport to: ");
             Scanner choice = new Scanner(System.in);
             lane = choice.nextLine();
-            if(map.getLaneAndCharacters().containsKey(lane)){
-                if(!this.lane.equals(lane)){
+            if (map.getLaneAndCharacters().containsKey(lane)) {
+                if (!this.getLane().equals(lane)) {
                     break;
-                }
-                else{
+                } else {
                     System.out.println("You cannot teleport to your own lane!");
                     System.out.println("To go back to your lane, enter 'r' to recall to your nexus in the next round.");
                     return true;
                 }
-            }
-            else{
+            } else {
                 System.out.println("This lane does not exist! Please try again.");
             }
         }
 
+
         int row;
-        while(true){
+        int column;
+        while (true) {
+            row = 0;
             System.out.println("Enter the row you would like to teleport to (Number between 1-8): ");
-            try{
+            try {
                 Scanner choice = new Scanner(System.in);
                 String option = choice.nextLine();
                 row = Integer.parseInt(option) - 1;
-                if(row<8 && row>=0) {
+                if (row < 8 && row >= 0) {
                     if (row >= map.getLaneAndCharacters().get(lane).get(0).getCurrPos().get(0)) {
                         if (row >= map.getLaneAndCharacters().get(lane).get(1).getCurrPos().get(0)) {
-                            break;
                         } else {
                             System.out.println("You cannot teleport to a row behind the monster!");
+                            continue;
                         }
                     } else {
                         System.out.println("You cannot teleport to a row ahead of the lane's assigned hero!");
+                        continue;
+                    }
+                } else {
+                    System.out.println("You are attempting to teleport out of the bounds of the map!");
+                    continue;
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println("Please enter only integers!");
+                continue;
+            }
+
+
+            if (lane.equals("Top")) {
+                if (row == 7) column = 1;
+                else {
+                    if (map.getLaneAndCharacters().get(lane).get(0).getCurrPos().get(1) == 0) {
+                        column = 1;
+                    } else {
+                        column = 0;
                     }
                 }
-                else{
-                    System.out.println("You are attempting to teleport out of the bounds of the map!");
+            } else if (lane.equals("Middle")) {
+                if (row == 7) column = 4;
+                else {
+                    if (map.getLaneAndCharacters().get(lane).get(0).getCurrPos().get(1) == 3) {
+                        column = 4;
+                    } else {
+                        column = 3;
+                    }
                 }
-            }catch (NumberFormatException ex) {
-                System.out.println("Please enter only integers!");
+            } else {
+                if (row == 7) column = 7;
+                else {
+                    if (map.getLaneAndCharacters().get(lane).get(0).getCurrPos().get(1) == 6) {
+                        column = 7;
+                    } else {
+                        column = 6;
+                    }
+                }
+            }
+
+            if (map.checkIfOccupied(heroGroup, row, column)) {
+                continue;
+            } else {
+                break;
             }
         }
 
-        int column;
-        if(lane.equals("Top")){
-            if(map.getLaneAndCharacters().get(lane).get(0).getCurrPos().get(1)==0){
-                column = 1;
-            }
-            else{
-                column = 0;
-            }
-        }
-        else if(lane.equals("Middle")){
-            if(map.getLaneAndCharacters().get(lane).get(0).getCurrPos().get(1)==3){
-                column = 4;
-            }
-            else{
-                column = 3;
-            }
-        }
-        else{
-            if(map.getLaneAndCharacters().get(lane).get(0).getCurrPos().get(1)==6){
-                column = 7;
-            }
-            else{
-                column = 6;
-            }
-        }
-
-        this.lane = lane;
-        super.setCurrPos(Arrays.asList(row,column));
+        super.setLane(lane);
+        super.setCurrPos(Arrays.asList(row, column));
 
         return true;
 
@@ -453,6 +466,7 @@ public class Hero extends Character{
                 return false;
             }
         }
+
         return true;
     }
 
